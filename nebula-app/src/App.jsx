@@ -1,6 +1,5 @@
 import logo from './logo.svg';
 import './App.css';
-import { supabase } from '../utils/supabase'
 
 function App() {
   return (
