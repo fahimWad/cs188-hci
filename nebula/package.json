@@ -1,5 +1,5 @@
 {
-  "name": "nebula-app",
+  "name": "nebula",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,9 +13,7 @@
     "@types/react-dom": "^19.1.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-pdf-highlighter": "^8.0.0-rc.0",
     "react-scripts": "5.0.1",
-    "reactflow": "^11.11.4",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
