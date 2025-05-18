@@ -5,7 +5,8 @@ import Flashcard from './pages/Flashcard';
 import PdfDisplay from './pages/PdfDisplay';
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{ display: "flex", height: "100vh" }}>
+      <PdfDisplay></PdfDisplay>
     </div>
   );
 }
