@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import IconComponent from './IconComponent';
 import { IoSearch } from "react-icons/io5";
+import CollapseButton from './CollapseButton';
 
 const cards = [
     { id: 1, text: "origins of replication" },
@@ -31,7 +32,7 @@ const Sidebar: React.FC = () => {
     }, [search, filteredCards]);
 
     return (
-        <div className="sidebar bg-[#878787]/[0.6] rounded-3xl w-[300px] p-8 flex flex-col h-screen box-ring gap-4">
+        <div className="sidebar bg-[#878787]/[0.6] rounded-3xl w-[300px] p-8 m-2 flex flex-col box-ring gap-4">
             <div className="flex items-center mb-4">
                 <div className="flex items-center bg-white rounded-lg px-4 py-2 w-full">
                     <IconComponent icon={IoSearch} />
