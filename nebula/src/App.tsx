@@ -6,6 +6,7 @@ import PdfDisplay from './pages/PdfDisplay';
 function App() {
   return (
     <div className="App">
+      <Flashcard />
     </div>
   );
 }
