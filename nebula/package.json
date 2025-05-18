@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@types/prop-types": "^15.7.14",
     "tailwindcss": "^3.4.17"
   }
 }
