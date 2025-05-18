@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoSearch } from "react-icons/io5";
 
 const cards = [
     { id: 1, text: "origins of replication" },
@@ -35,16 +36,18 @@ const Sidebar: React.FC = () => {
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-4 py-2 w-full"
+                    className="border border-gray-300 rounded-lg px-4 py-2 w-full rounded-full"
                 />
             </div>
             {filteredCards.map(card => (
                 <div
                     key={card.id}
-                    className="bg-white rounded-xl shadow-md flex items-center justify-center h-20 cursor-pointer px-8 py-12 text-center"
+                    className={`bg-white rounded-xl shadow-md flex items-center justify-center h-20 cursor-pointer px-8 py-12 text-center ${
+                        selected === card.id ? "border-4 border-[#e3dffc]": "border-4 border-transparent"
+                    }`}
                     onClick={() => setSelected(card.id)}
                 >
-                    <span className={`text-gray-800 text-lg ${selected === card.id ? "font-bold" : "font-light"}`}>{card.text}</span>
+                    <span className={`text-gray-800 text-lg ${selected === card.id ? "font-bold" : "font-medium"}`}>{card.text}</span>
                 </div>
             ))}
             {filteredCards.length === 0 && (
