@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoSearch } from "react-icons/io5";
 
 const cards = [
     { id: 1, text: "origins of replication" },
@@ -13,105 +14,45 @@ const Sidebar: React.FC = () => {
     const [selected, setSelected] = useState(1);
     const [search, setSearch] = useState("");
 
+    // Filter cards based on search (case-insensitive direct word search)
+    const filteredCards = search
+        ? cards.filter(card =>
+            card.text.toLowerCase().startsWith(search.toLowerCase())
+        )
+        : cards;
+
+    // Optionally, auto-select the first match when searching
+    React.useEffect(() => {
+        if (search && filteredCards.length > 0) {
+            setSelected(filteredCards[0].id);
+        }
+    }, [search]);
+
     return (
-        <div className="sidebar" style={{
-            width: 280,
-            background: "#F4F4F4",
-            borderRadius: 24,
-            padding: 16,
-            display: "flex",
-            flexDirection: "column",
-            height: "100vh",
-            boxSizing: "border-box"
-        }}>
-            {/* Top Chevron */}
-            <div style={{ display: "flex", alignItems: "center", marginBottom: 16 }}>
-                <span style={{ fontSize: 24 }}>➤</span>
-            </div>
-            {/* Search Bar */}
-            <div style={{
-                background: "#fff",
-                borderRadius: 12,
-                padding: "8px 12px",
-                display: "flex",
-                alignItems: "center",
-                marginBottom: 16
-            }}>
+        <div className="sidebar bg-[#A5A5A5] rounded-3xl w-[300px] p-8 flex flex-col h-screen box-border gap-4">
+            <div className="flex items-center mb-4">
                 <input
                     type="text"
-                    placeholder="Search"
+                    placeholder="Search..."
                     value={search}
-                    onChange={e => setSearch(e.target.value)}
-                    style={{
-                        border: "none",
-                        outline: "none",
-                        marginLeft: 8,
-                        background: "transparent",
-                        width: "100%",
-                        fontSize: 16
-                    }}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="border border-gray-300 rounded-lg px-4 py-2 w-full rounded-full"
                 />
             </div>
-            {/* Card List */}
-            <div style={{
-                flex: 1,
-                overflowY: "auto",
-                display: "flex",
-                flexDirection: "column",
-                gap: 16,
-                marginBottom: 16
-            }}>
-                {cards
-                    .filter(card => card.text.toLowerCase().includes(search.toLowerCase()))
-                    .map(card => (
-                        <div
-                            key={card.id}
-                            onClick={() => setSelected(card.id)}
-                            style={{
-                                background: selected === card.id ? "#fff" : "#F4F4F4",
-                                borderRadius: 16,
-                                padding: "20px 16px",
-                                boxShadow: selected === card.id ? "0 0 0 2px #C6C6F8" : "0 1px 4px rgba(0,0,0,0.03)",
-                                fontWeight: selected === card.id ? 700 : 400,
-                                fontSize: 18,
-                                color:
-                                    selected === card.id ? "#222" : "#888",
-                                cursor: "pointer",
-                                position: "relative",
-                                minHeight: 48,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between"
-                            }}
-                        >       
-                            <span>{card.text}</span>
-                            {card.text === "semiconservative model" && (
-                                <span style={{ display: "flex", gap: 8 }}>
-                                    <span style={{ cursor: "pointer" }}>🗑️</span>
-                                    <span style={{ cursor: "pointer" }}>✏️</span>
-                                    <span style={{ cursor: "pointer" }}>📋</span>
-                                </span>
-                            )}
-                        </div>
-                    ))}
-            </div>
-            {/* Add Button */}
-            <button
-                style={{
-                    background: "#E0E0E0",
-                    border: "none",
-                    borderRadius: "50%",
-                    width: 40,
-                    height: 40,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto",
-                    cursor: "pointer"
-                }}
-            >
-                <span style={{ fontSize: 24 }}>➕</span>
-            </button>
+            {filteredCards.map(card => (
+                <div
+                    key={card.id}
+                    className={`bg-white rounded-xl shadow-md flex items-center justify-center h-20 cursor-pointer px-8 py-12 text-center ${
+                        selected === card.id ? "border-4 border-[#e3dffc]": "border-4 border-transparent"
+                    }`}
+                    onClick={() => setSelected(card.id)}
+                >
+                    <span className={`text-gray-800 text-lg ${selected === card.id ? "font-bold" : "font-medium"}`}>{card.text}</span>
+                </div>
+            ))}
+            {filteredCards.length === 0 && (
+                <div className="text-gray-500 text-center mt-4">No results found.</div>
+            )}
         </div>
     );
 }
