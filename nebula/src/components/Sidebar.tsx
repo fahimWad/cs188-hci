@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import IconComponent from './IconComponent';
 import { IoSearch } from "react-icons/io5";
 
 const cards = [
@@ -31,13 +32,16 @@ const Sidebar: React.FC = () => {
     return (
         <div className="sidebar bg-[#A5A5A5] rounded-3xl w-[300px] p-8 flex flex-col h-screen box-border gap-4">
             <div className="flex items-center mb-4">
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-4 py-2 w-full rounded-full"
-                />
+                <div className="flex items-center bg-white rounded-lg px-4 py-2 w-full">
+                    <IconComponent icon={IoSearch} />
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="ml-2 outline-none bg-transparent w-full"
+                    />
+                </div>
             </div>
             {filteredCards.map(card => (
                 <div
