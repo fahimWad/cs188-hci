@@ -19,4 +19,4 @@ npm start
 ## Interaction Flow 1
 Our first interaction flow is making flashcards from highlighting a (preinstalled) PDF.
 
-Simply highlight text to initialize the front of a flashcard, and highlight more text to initialize the back of a flashcard. Once the flashcard is created, you can click on it to select it, and double click on it to flip it.
+Simply highlight text to initialize the front of a flashcard, and highlight more text to initialize the back of a flashcard. Once the flashcard is created, you can click on it in the sidebar to select it, and double click on it to flip it.
