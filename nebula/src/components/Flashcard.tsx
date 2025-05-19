@@ -22,7 +22,7 @@ interface FlashcardProps {
  * ------------------------------------------------------------
  *  • Single‑click   → onSelect()
  *  • Double‑click   → onFlip()
- *  • ✏️ icon        → onEdit(id)
+ *  • icon        → onEdit(id)
  *  • save button    → onEdit(null)
  *  • Stops event propagation so the sidebar handler doesn’t fire
  */
