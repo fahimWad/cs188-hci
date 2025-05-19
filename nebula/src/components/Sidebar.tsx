@@ -1,66 +1,80 @@
 import React, { useState } from 'react';
 import IconComponent from './IconComponent';
-import { IoSearch } from "react-icons/io5";
+import Flashcard, { FlashcardData } from './Flashcard';
 import CollapseButton from './CollapseButton';
 
-const cards = [
-    { id: 1, text: "origins of replication" },
-    { id: 2, text: "dispersive model" },
-    { id: 3, text: "conservative model" },
-    { id: 4, text: "semiconservative model" },
-    { id: 5, text: "Chargaff’s rules" },
-    { id: 6, text: "Transformation" },
-];
-
-const Sidebar: React.FC = () => {
-    const [selected, setSelected] = useState(0);
-    const [hovered, setHovered] = useState(0);
-    const [search, setSearch] = useState("");
-
-    // Filter cards based on search (case-insensitive direct word search)
-    const filteredCards = search
-        ? cards.filter(card =>
-            card.text.toLowerCase().startsWith(search.toLowerCase())
-        )
-        : cards;
-
-    // Optionally, auto-select the first match when searching
-    React.useEffect(() => {
-        if (search && filteredCards.length > 0) {
-            setSelected(filteredCards[0].id);
-        }
-    }, [search, filteredCards]);
-
-    return (
-        <div className="sidebar bg-[#878787]/[0.6] rounded-3xl w-[300px] p-8 m-2 flex flex-col box-ring gap-4">
-            <div className="flex items-center mb-4">
-                <div className="flex items-center bg-white rounded-lg px-4 py-2 w-full">
-                    <IconComponent icon={IoSearch} />
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="ml-2 outline-none bg-transparent w-full"
-                    />
-                </div>
-            </div>
-            {filteredCards.map(card => (
-                <div
-                    key={card.id}
-                    className={`bg-white rounded-xl shadow-md flex items-center justify-center h-20 cursor-pointer px-8 py-12 text-center ring-4 ease-in-out duration-200 ${
-                        selected === card.id || hovered === card.id ? "ring-[#CCC4FF]": "ring-transparent"}`}
-                    onClick={() => setSelected(card.id)}
-                    onMouseEnter={() => setHovered(card.id)}
-                    onMouseLeave={() => setHovered(0)}
-                >
-                    <span className={`text-gray-800 text-lg ${selected === card.id ? "font-bold" : "font-medium"}`}>{card.text}</span>
-                </div>
-            ))}
-            {filteredCards.length === 0 && (
-                <div className="text-gray-500 text-center mt-4">No results found.</div>
-            )}
-        </div>
-    );
+interface SidebarProps {
+    initialCards: FlashcardData[];
 }
+
+// const initialCards: FlashcardData[] = [
+//   { id: 1, front: 'origins of replication',  back: 'definition or answer' },
+//   { id: 2, front: 'dispersive model',        back: 'definition or answer' },
+//   { id: 3, front: 'conservative model',      back: 'definition or answer' },
+//   { id: 4, front: 'semiconservative model',  back: 'definition or answer' },
+//   { id: 5, front: "Chargaff’s rules",        back: 'definition or answer' },
+//   { id: 6, front: 'Transformation',          back: 'definition or answer' },
+// ];
+
+const Sidebar: React.FC<SidebarProps> = ({ initialCards }) => {
+  const [selectedId, setSelectedId] = useState<string | number | null>(null);
+  const [editingId,  setEditingId]  = useState<string | number | null>(null);
+  const [flippedId,  setFlippedId]  = useState<string | number | null>(null);
+  const [hoveredId,  setHoveredId]  = useState<string | number | null>(null);
+  const [search,     setSearch]     = useState('');
+
+  // ------------------------------------------------------------
+  // search filter
+  // ------------------------------------------------------------
+  const filtered = initialCards.filter(c =>
+    c.front.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div
+      className="sidebar bg-[#878787]/[0.6] rounded-3xl w-[300px] h-screen p-8 flex flex-col box-ring gap-4 absolute x-500 y-0 z-100"
+    >
+      {/* --- search input -------------------------------------------------- */}
+      <input
+        type="text"
+        placeholder="Search..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        className="rounded-full px-4 py-2 w-full"
+      />
+
+      {/* --- flashcard list with hover ring ------------------------------------------------ */}
+      <div className="flex flex-col gap-4 overflow-visible">
+        {filtered.map(card => {
+          const cardKey = card.id ?? card.front;
+          const isActive = selectedId === cardKey || hoveredId === cardKey;
+          return (
+            <div
+              key={cardKey}
+              onMouseEnter={() => setHoveredId(cardKey)}
+              onMouseLeave={() => setHoveredId(null)}
+            >
+              <Flashcard
+                card={card}
+                isActive={isActive}
+                selected={selectedId === cardKey}
+                editing={editingId === cardKey}
+                flipped={flippedId === cardKey}
+                /* actions passed down */
+                onSelect={() => setSelectedId(cardKey)}
+                onEdit={id => setEditingId(id)}  // id or null
+                onFlip={() =>
+                  setFlippedId(prev =>
+                    prev === cardKey ? null : cardKey
+                  )
+                }
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 export default Sidebar;
