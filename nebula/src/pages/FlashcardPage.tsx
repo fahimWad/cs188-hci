@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from '../components/Sidebar';
 
-const Flashcard: React.FC = () => {
+const FlashcardPage: React.FC = () => {
     return (
         <div className="flex flex-row h-screen">
             <div className="flex-1 bg-gray-100 p-4">
@@ -13,4 +13,4 @@ const Flashcard: React.FC = () => {
     );
 };
 
-export default Flashcard;
+export default FlashcardPage;

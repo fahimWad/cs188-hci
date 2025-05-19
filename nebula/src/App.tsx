@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 // import './App.css';
-import Flashcard from './pages/Flashcard';
+import FlashcardPage from './pages/FlashcardPage';
 import PdfDisplay from './pages/PdfDisplay';
 function App() {
   return (
