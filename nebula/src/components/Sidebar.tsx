@@ -3,16 +3,20 @@ import IconComponent from './IconComponent';
 import Flashcard, { FlashcardData } from './Flashcard';
 import CollapseButton from './CollapseButton';
 
-const initialCards: FlashcardData[] = [
-  { id: 1, front: 'origins of replication',  back: 'definition or answer' },
-  { id: 2, front: 'dispersive model',        back: 'definition or answer' },
-  { id: 3, front: 'conservative model',      back: 'definition or answer' },
-  { id: 4, front: 'semiconservative model',  back: 'definition or answer' },
-  { id: 5, front: "Chargaff’s rules",        back: 'definition or answer' },
-  { id: 6, front: 'Transformation',          back: 'definition or answer' },
-];
+interface SidebarProps {
+    initialCards: FlashcardData[];
+}
 
-const Sidebar: React.FC = () => {
+// const initialCards: FlashcardData[] = [
+//   { id: 1, front: 'origins of replication',  back: 'definition or answer' },
+//   { id: 2, front: 'dispersive model',        back: 'definition or answer' },
+//   { id: 3, front: 'conservative model',      back: 'definition or answer' },
+//   { id: 4, front: 'semiconservative model',  back: 'definition or answer' },
+//   { id: 5, front: "Chargaff’s rules",        back: 'definition or answer' },
+//   { id: 6, front: 'Transformation',          back: 'definition or answer' },
+// ];
+
+const Sidebar: React.FC<SidebarProps> = ({ initialCards }) => {
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
   const [editingId,  setEditingId]  = useState<string | number | null>(null);
   const [flippedId,  setFlippedId]  = useState<string | number | null>(null);
@@ -28,7 +32,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <div
-      className="sidebar bg-[#878787]/[0.6] rounded-3xl w-[300px] p-8 m-2 flex flex-col box-ring gap-4"
+      className="sidebar bg-[#878787]/[0.6] rounded-3xl w-[300px] h-screen p-8 flex flex-col box-ring gap-4 absolute x-500 y-0 z-100"
     >
       {/* --- search input -------------------------------------------------- */}
       <input
