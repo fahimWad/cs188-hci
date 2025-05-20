@@ -15,7 +15,7 @@ import FloatingFlashcard from "../components/FloatingFlashcard";
 import Sidebar from "../components/Sidebar";
 import { CustomHighlight } from "../components/Highlights";
 import HighlighterContainer from "./HighlighterContainer";
-
+import ConfirmButton from "./ConfirmButton";
 const PdfDisplay: React.FC = () => {
   const [highlights, setHighlights] = useState<Array<CustomHighlight>>([]); // Actual array storing highlights
   const [front, switchSide] = useState<boolean>(true); // false = selecting back of flashcard, true = selecting front of flashcard
@@ -36,6 +36,13 @@ const PdfDisplay: React.FC = () => {
     };
     setHighlights((pastHighlights) => {
       return [newHighlight, ...pastHighlights];
+    });
+  };
+  const confirmClick = () => {
+    setFlashcards((prev) => [...prev, currentFlashcard]);
+    setCurFlashcard({
+      front: "",
+      back: "",
     });
   };
   return (
@@ -71,15 +78,14 @@ const PdfDisplay: React.FC = () => {
                       id: getID(),
                       front: currentFlashcard.front ?? "",
                       back: [
-                        currentFlashcard.front ?? "",
-                        (currentFlashcard.front ?? "").trimEnd().length
+                        currentFlashcard.back ?? "",
+                        (currentFlashcard.back ?? "").trimEnd().length
                           ? " "
                           : "",
                         selection.content.text ?? selection.content.image ?? "",
                       ].join(""), // Add to current back of flashcard (appending space if no space)
                     };
                     setCurFlashcard(completeFlashcard);
-                    setFlashcards((prev) => [...prev, completeFlashcard]);
                     //switchSide((side) => !side);
                     console.log(flashcards);
                   }
@@ -101,6 +107,7 @@ const PdfDisplay: React.FC = () => {
       />
       <div className="absolute top-0 right-0 h-full w-[300px] z-[200]">
         <Sidebar initialCards={flashcards} />
+        <ConfirmButton onClick={confirmClick}></ConfirmButton>
       </div>
     </div>
   );
