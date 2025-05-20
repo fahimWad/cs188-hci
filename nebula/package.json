@@ -16,15 +16,14 @@
     "react-pdf-highlighter-extended": "^8.1.0",
     "react-scripts": "5.0.1",
     "reactflow": "^11.11.4",
-    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
-"scripts": {
-  "start": "craco start",
-  "build": "craco build",
-  "test": "craco test",
-  "eject": "react-scripts eject"
-},
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -48,6 +47,7 @@
     "@types/prop-types": "^15.7.14",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
   }
 }
