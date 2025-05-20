@@ -1,6 +1,13 @@
 import React from "react";
 import "react-pdf-highlighter-extended"
 import { AreaHighlight, TextHighlight, useHighlightContainerContext, usePdfHighlighterContext } from "react-pdf-highlighter-extended";
+import { CustomHighlight } from "./Highlights";
+
+// Constants for easy refactor
+const PRIMARY_HIGHLIGHTER_COLOR = "rgba(204, 196, 255, 1)"
+const SECONDARY_HIGHLIGHTER_COLOR = "rgba(204, 196, 255, 0.5)"
+const PAST_HIGHLIGHT_COLOR = "rgba(218, 218, 218, 0.31)"
+
 
 const HighlighterContainer = () =>{
     const {
@@ -9,11 +16,19 @@ const HighlighterContainer = () =>{
         screenshot, // Screenshot a bounding rectangle
         isScrolledTo, // Whether the highlight has been auto-scrolled to
         highlightBindings, // Whether the highlight has been auto-scrolled to
-      } = useHighlightContainerContext();
+      } = useHighlightContainerContext<CustomHighlight>();
     const highlightContext = usePdfHighlighterContext()
+    let highlighterColor = PAST_HIGHLIGHT_COLOR // Gray color
+    if (highlight.side == "front"){
+      highlighterColor = PRIMARY_HIGHLIGHTER_COLOR
+    }
+    else if(highlight.side == "back"){
+      highlighterColor = SECONDARY_HIGHLIGHTER_COLOR
+    }
     const isText = highlight.type == "text"
     const highlightContainer = isText ? (
-        <TextHighlight highlight={highlight} isScrolledTo={isScrolledTo}></TextHighlight>
+        <TextHighlight highlight={highlight} isScrolledTo={isScrolledTo}
+        style={{ background: highlighterColor }}></TextHighlight>
 
     ):(
         <AreaHighlight

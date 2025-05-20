@@ -1,11 +1,10 @@
-import { PdfHighlighter, PdfLoader, ScaledPosition, AreaHighlight, PdfSelection, PdfHighlighterUtils } from "react-pdf-highlighter-extended";
+import { PdfHighlighter, PdfLoader, ScaledPosition, AreaHighlight, PdfSelection, PdfHighlighterUtils, GhostHighlight } from "react-pdf-highlighter-extended";
 import React, {useRef, useState} from "react";
 import { getID,getNewID } from "../utils/flashCardID";
 import "react-pdf-highlighter/dist/style.css"
 import Flashcard, { FlashcardData } from "../components/Flashcard";
 import FloatingFlashcard from "../components/FloatingFlashcard";
 import Sidebar from "../components/Sidebar";
-import { TextHighlight } from "react-pdf-highlighter-extended";
 import { CustomHighlight } from "../components/Highlights";
 import HighlighterContainer from "./HighlighterContainer";
 
@@ -15,8 +14,8 @@ const PdfDisplay: React.FC = () => {
     const [flashcards, setFlashcards] = useState<Array<FlashcardData>>([]) // Array storing flashcard information
     const [currentFlashcard, setCurFlashcard] = useState<FlashcardData>({front:"",back:""})
     const highlighterUtilsRef = useRef<PdfHighlighterUtils | null>(null);
-    const addHighlight = (highlight: CustomHighlight) => {
-        const newHighlight: CustomHighlight = {...highlight, id: String(getID())}
+    const addHighlight = (highlight: GhostHighlight) => { // Use to actually save highlight
+        const newHighlight: CustomHighlight = {...highlight, side: front ? "front":"back", flashcardID: getID(), id:String(getID())}
         setHighlights((pastHighlights) => {
             return [newHighlight, ...pastHighlights]
         })
@@ -36,7 +35,7 @@ const PdfDisplay: React.FC = () => {
                   onSelection={(
                     selection: PdfSelection
                   ) => {
-                    selection.makeGhostHighlight()
+                    addHighlight(selection.makeGhostHighlight())
                   }}
                   highlights={highlights}
                 >
