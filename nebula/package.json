@@ -45,6 +45,8 @@
     ]
   },
   "devDependencies": {
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "@types/prop-types": "^15.7.14",
     "tailwindcss": "^3.4.17"
   }
