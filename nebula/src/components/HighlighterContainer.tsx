@@ -5,7 +5,7 @@ import { CustomHighlight } from "./Highlights";
 
 // Constants for easy refactor
 const PRIMARY_HIGHLIGHTER_COLOR = "rgba(204, 196, 255, 1)"
-const SECONDARY_HIGHLIGHTER_COLOR = "rgba(204, 196, 255, 0.5)"
+const SECONDARY_HIGHLIGHTER_COLOR = "rgba(204, 196, 255, 0.25)"
 const PAST_HIGHLIGHT_COLOR = "rgba(218, 218, 218, 0.31)"
 
 
@@ -19,11 +19,13 @@ const HighlighterContainer = () =>{
       } = useHighlightContainerContext<CustomHighlight>();
     const highlightContext = usePdfHighlighterContext()
     let highlighterColor = PAST_HIGHLIGHT_COLOR // Gray color
-    if (highlight.side == "front"){
-      highlighterColor = PRIMARY_HIGHLIGHTER_COLOR
-    }
-    else if(highlight.side == "back"){
-      highlighterColor = SECONDARY_HIGHLIGHTER_COLOR
+    if (highlight.active){ // Only if we are currently selecting the highlighter
+      if (highlight.side == "front"){
+        highlighterColor = PRIMARY_HIGHLIGHTER_COLOR
+      }
+      else if(highlight.side == "back"){
+        highlighterColor = SECONDARY_HIGHLIGHTER_COLOR
+      }
     }
     const isText = highlight.type == "text"
     const highlightContainer = isText ? (
