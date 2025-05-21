@@ -2,7 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 // import './App.css';
 // import FlashcardPage from './pages/FlashcardPage';
-import PdfDisplay from './pages/PdfDisplay';
+//import PdfDisplay from './pages/PdfDisplay2';
+import PdfDisplay from './components/PdfDisplay';
 import Sidebar from './components/Sidebar';
 function App() {
   return (
