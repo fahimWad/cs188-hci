@@ -8,14 +8,15 @@ import {
   GhostHighlight,
 } from "react-pdf-highlighter-extended";
 import React, { useRef, useState } from "react";
-import { getID, getNewID } from "../../utils/flashCardID.ts";
+import { getID, getNewID } from "../../utils/flashCardID";
 import "react-pdf-highlighter/dist/style.css";
-import Flashcard, { FlashcardData } from "../flashcard_components/Flashcard.tsx";
-import FloatingFlashcard from "../flashcard_components/FloatingFlashcard.tsx";
-import Sidebar from "../flashcard_components/Sidebar.tsx";
-import { CustomHighlight } from "../flashcard_components/Highlights.tsx";
-import HighlighterContainer from "./HighlighterContainer.tsx";
-import ConfirmButton from "./ConfirmButton.tsx";
+import Flashcard, { FlashcardData } from "../flashcard_components/Flashcard";
+import FloatingFlashcard from "../flashcard_components/FloatingFlashcard";
+import Sidebar from "../flashcard_components/Sidebar";
+import { CustomHighlight } from "../flashcard_components/Highlights";
+import HighlighterContainer from "./HighlighterContainer";
+import ConfirmButton from "./ConfirmButton";
+
 const PdfDisplay: React.FC = () => {
   const [highlights, setHighlights] = useState<Array<CustomHighlight>>([]); // Actual array storing highlights
   const [front, switchSide] = useState<boolean>(true); // false = selecting back of flashcard, true = selecting front of flashcard
@@ -107,7 +108,7 @@ const PdfDisplay: React.FC = () => {
       />
       <div className="absolute top-0 right-0 h-full w-[300px] z-[200]">
         <Sidebar initialCards={flashcards} />
-        <ConfirmButton onClick={confirmClick}></ConfirmButton>
+        <ConfirmButton onClick={confirmClick} />
       </div>
     </div>
   );

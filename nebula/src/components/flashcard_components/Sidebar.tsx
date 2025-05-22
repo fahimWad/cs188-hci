@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import IconComponent from './IconComponent';
-import Flashcard, { FlashcardData } from './Flashcard.tsx';
+import Flashcard, { FlashcardData } from './Flashcard';
 import CollapseButton from './CollapseButton';
 
 interface SidebarProps {

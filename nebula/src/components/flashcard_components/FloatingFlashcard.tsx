@@ -1,6 +1,6 @@
 import React from "react";
-import { FlashcardData } from "./Flashcard.tsx";
-import QuickButton from "./FlipButton.tsx";
+import { FlashcardData } from "./Flashcard";
+import QuickButton from "./FlipButton";
 interface FloatingFlashcardProps {
   flashcard: FlashcardData;
   onFlip: any; // I do not care this is bad syntax, fix it later
