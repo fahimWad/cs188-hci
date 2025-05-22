@@ -47,7 +47,7 @@ const PdfDisplay: React.FC = () => {
   };
   return (
     <div className="relative w-screen h-screen">
-      <div className="w-3/4 h-full absolute left-0 top-0">
+      <div className="h-full absolute left-0 top-0 w-screen overflow-hidden">
         <PdfLoader document="/designPDF.pdf">
           {(pdfDocument) => (
             <div className="absolute inset-0">
