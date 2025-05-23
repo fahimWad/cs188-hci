@@ -15,6 +15,7 @@ import FloatingFlashcard from "../components/FloatingFlashcard";
 import Sidebar from "../components/Sidebar";
 import { CustomHighlight } from "../components/Highlights";
 import HighlighterContainer from "./HighlighterContainer";
+
 const PdfDisplay: React.FC = () => {
   const [highlights, setHighlights] = useState<Array<CustomHighlight>>([]); // Actual array storing highlights
   const [front, switchSide] = useState<boolean>(true); // false = selecting back of flashcard, true = selecting front of flashcard
@@ -24,6 +25,7 @@ const PdfDisplay: React.FC = () => {
     back: "",
   });
   const highlighterUtilsRef = useRef<PdfHighlighterUtils | null>(null);
+
   const addHighlight = (highlight: GhostHighlight) => {
     // Use to actually save highlight
     const newHighlight: CustomHighlight = {
@@ -37,6 +39,7 @@ const PdfDisplay: React.FC = () => {
       return [newHighlight, ...pastHighlights];
     });
   };
+
   const handleConfirm = () => {
     setFlashcards((prev) => [...prev, currentFlashcard]);
     setCurFlashcard({
@@ -56,6 +59,7 @@ const PdfDisplay: React.FC = () => {
     );
     setCurFlashcard({ front: "", back: "" });
   }
+
   return (
     <div className="relative w-screen h-screen">
       <div className="h-full absolute left-0 top-0 w-screen overflow-hidden">
@@ -119,7 +123,7 @@ const PdfDisplay: React.FC = () => {
         onDelete= {handleDelete}
       />
       <div className="absolute top-0 right-0 h-full w-[300px] z-[200]">
-        <Sidebar cards={flashcards} setCards={setFlashcards} />
+        <Sidebar cards={flashcards} setCards={setFlashcards} setHighlights={setHighlights} highlights={highlights}/>
       </div>
     </div>
   );

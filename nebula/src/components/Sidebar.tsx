@@ -7,9 +7,11 @@ import { CustomHighlight } from './Highlights';
 interface SidebarProps {
     cards: FlashcardData[];
     setCards: React.Dispatch<React.SetStateAction<FlashcardData[]>>;
+    setHighlights: React.Dispatch<React.SetStateAction<CustomHighlight[]>>;
+    highlights: CustomHighlight[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ cards, setCards }) => {
+const Sidebar: React.FC<SidebarProps> = ({ cards, setCards, highlights, setHighlights }) => {
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
   const [editingId,  setEditingId]  = useState<string | number | null>(null);
   const [flippedId,  setFlippedId]  = useState<string | number | null>(null);
@@ -73,6 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ cards, setCards }) => {
                   color='lavender'
                   onClick={() => {
                     setCards(prev => prev.filter(c => (c.id ?? c.front) !== cardKey));
+                    setHighlights(prev => prev.filter(h => h.id !== cardKey));
                     if (selectedId === cardKey) setSelectedId(null);
                     if (editingId === cardKey) setEditingId(null);
                     if (flippedId === cardKey) setFlippedId(null);
