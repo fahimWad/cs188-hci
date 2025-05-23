@@ -20,6 +20,7 @@ const PdfDisplay: React.FC = () => {
   const [highlights, setHighlights] = useState<Array<CustomHighlight>>([]); // Actual array storing highlights
   const [front, switchSide] = useState<boolean>(true); // false = selecting back of flashcard, true = selecting front of flashcard
   const [flashcards, setFlashcards] = useState<Array<FlashcardData>>([]); // Array storing flashcard information
+  const [pendingFlashcardId, setPendingFlashcardId] = useState<number | null>(null); // ID of flashcard being edited
   const [currentFlashcard, setCurFlashcard] = useState<FlashcardData>({
     front: "",
     back: "",
@@ -27,14 +28,17 @@ const PdfDisplay: React.FC = () => {
   const highlighterUtilsRef = useRef<PdfHighlighterUtils | null>(null);
 
   const addHighlight = (highlight: GhostHighlight) => {
+    const highlightId = pendingFlashcardId ?? getID();
     // Use to actually save highlight
     const newHighlight: CustomHighlight = {
       ...highlight,
       side: front ? "front" : "back",
-      flashcardID: getID(),
-      id: String(getID()),
+      flashcardID: highlightId,
+      id: String(highlightId),
       active: true,
     };
+    // DEBUGGING
+    console.log("Adding highlight:", newHighlight);
     setHighlights((pastHighlights) => {
       return [newHighlight, ...pastHighlights];
     });
@@ -46,6 +50,7 @@ const PdfDisplay: React.FC = () => {
       front: "",
       back: "",
     });
+    setPendingFlashcardId(null);
     switchSide((prev) => true);
   };
 
@@ -57,6 +62,8 @@ const PdfDisplay: React.FC = () => {
           card.back !== currentFlashcard.back
       )
     );
+    setPendingFlashcardId(null);
+    setHighlights((prev) => prev.filter((h) => h.flashcardID !== currentFlashcard.id));
     setCurFlashcard({ front: "", back: "" });
   }
 
@@ -76,7 +83,10 @@ const PdfDisplay: React.FC = () => {
                 }
                 onSelection={(selection: PdfSelection) => {
                   if (front) {
+                    const newId = pendingFlashcardId ?? getNewID();
+                    setPendingFlashcardId(newId);
                     const nextFlashcard = {
+                      id: newId,
                       front: [
                         currentFlashcard.front ?? "",
                         (currentFlashcard.front ?? "").trimEnd().length
@@ -90,7 +100,7 @@ const PdfDisplay: React.FC = () => {
                     //switchSide((side) => !side);
                   } else if (!front) {
                     const completeFlashcard = {
-                      id: getNewID(),
+                      id: pendingFlashcardId ?? getID(),
                       front: currentFlashcard.front ?? "",
                       back: [
                         currentFlashcard.back ?? "",
@@ -102,7 +112,7 @@ const PdfDisplay: React.FC = () => {
                     };
                     setCurFlashcard(completeFlashcard);
                     //switchSide((side) => !side);
-                    console.log(flashcards);
+                    // console.log(flashcards);
                   }
                   addHighlight(selection.makeGhostHighlight());
                 }}

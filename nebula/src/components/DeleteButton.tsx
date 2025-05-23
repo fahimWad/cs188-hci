@@ -20,7 +20,6 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
     <button
         className={`
             p-0.5 rounded-lg border-2
-            bg-transparent
             transition-colors
             text-xl cursor-pointer
             ${colorClassMap[color] || ''}

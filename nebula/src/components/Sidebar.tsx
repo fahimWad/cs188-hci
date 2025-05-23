@@ -41,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ cards, setCards, highlights, setHighl
       {/* --- flashcard list with hover ring ------------------------------------------------ */}
       {filtered.length === 0  && 
         <div className="flex flex-col items-center justify-center h-full">
-          <p className="text-white-50">No flashcards created</p>
+          <p className="text-white-25">No flashcards created</p>
         </div>
       }
       <div className="flex flex-col gap-4 overflow-visible">
@@ -75,7 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ cards, setCards, highlights, setHighl
                   color='lavender'
                   onClick={() => {
                     setCards(prev => prev.filter(c => (c.id ?? c.front) !== cardKey));
-                    setHighlights(prev => prev.filter(h => h.id !== cardKey));
+                    setHighlights(prev => prev.filter(h => h.flashcardID !== cardKey));
                     if (selectedId === cardKey) setSelectedId(null);
                     if (editingId === cardKey) setEditingId(null);
                     if (flippedId === cardKey) setFlippedId(null);
