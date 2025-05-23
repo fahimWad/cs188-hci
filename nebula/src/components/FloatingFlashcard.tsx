@@ -21,7 +21,7 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
   //   if (!flashcard || (!flashcard.front && !flashcard.back)) return null;
   const [flipped, setFlipped] = React.useState(false);
   return (
-    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 translate-x-12 bg-white p-4 rounded shadow-lg z-50 ring-[#CCC4FF] ring-4 w-[400px] h-[300px] [perspective:1000px] flex flex-col">
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 lg:translate-x-40 md:translate-x-20 translate-x-12 bg-white p-4 rounded shadow-lg z-50 ring-[#CCC4FF] ring-4 w-[400px] h-[300px] [perspective:1000px] flex flex-col">
       {/* Flashcard header */}
       <div className="w-full flex justify-between items-center mb-2">
         {/* Delete Button */}

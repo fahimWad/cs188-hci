@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ cards, setCards }) => {
 
   return (
     <div
-      className="sidebar bg-[#878787]/[0.6] rounded-3xl w-[300px] h-screen p-8 flex flex-col box-ring gap-4 absolute x-500 y-0 z-100"
+      className="sidebar bg-[#878787]/[0.6] rounded-3xl w-[300px] h-screen p-8 flex flex-col box-ring gap-4 absolute x-500 y-0 z-40 overflow-y-scroll"
     >
       {/* --- search input -------------------------------------------------- */}
       <input

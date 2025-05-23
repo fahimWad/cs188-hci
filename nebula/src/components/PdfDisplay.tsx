@@ -118,7 +118,7 @@ const PdfDisplay: React.FC = () => {
         onConfirm= {handleConfirm}
         onDelete= {handleDelete}
       />
-      <div className="absolute top-0 right-0 h-full w-[300px] z-[200]">
+      <div className="absolute top-0 right-0 h-full w-[300px] z-[20]">
         <Sidebar cards={flashcards} setCards={setFlashcards} />
       </div>
     </div>
