@@ -1,11 +1,11 @@
 
 import React from 'react';
-interface FlipButtonProps {
-  onClick: any, // I do not care this is bad syntax, fix it later
-
-
+import { text } from 'stream/consumers';
+interface QuickButtonProps {
+  btnText: string,
+  onClick: () => void, // I do not care this is bad syntax, fix it later
 }
-export default function QuickButton({ onClick}:FlipButtonProps) {
+export default function QuickButton({btnText, onClick}: QuickButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -18,7 +18,7 @@ export default function QuickButton({ onClick}:FlipButtonProps) {
         fontSize: '0.9rem',
       }}
     >
-      Flip
+      {btnText}
     </button>
   );
 }

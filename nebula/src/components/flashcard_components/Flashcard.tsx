@@ -1,7 +1,8 @@
 import React, { useState, useId } from 'react';
+import { CustomHighlight } from './Highlights';
 
 export interface FlashcardData {
-  id?: number | string;
+  id?: number;
   front: string;
   back: string;
 }
@@ -54,8 +55,8 @@ const Flashcard: React.FC<FlashcardProps> = ({
       cursor-pointer px-8 py-12 text-center
       transition
       ring-4 ease-in-out duration-200
-      ${isActive ? "ring-[#CCC4FF]" : "ring-transparent"}
-      `}
+      ${isActive ? "ring-[#CCC4FF]" : "ring-transparent"}`}
+
     >
       <span
       className="

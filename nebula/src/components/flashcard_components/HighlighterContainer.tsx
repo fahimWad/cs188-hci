@@ -20,10 +20,10 @@ const HighlighterContainer = () =>{
     const highlightContext = usePdfHighlighterContext()
     let highlighterColor = PAST_HIGHLIGHT_COLOR // Gray color
     if (highlight.active){ // Only if we are currently selecting the highlighter
-      if (highlight.side == "front"){
+      if (highlight.curSide === "front"){
         highlighterColor = PRIMARY_HIGHLIGHTER_COLOR
       }
-      else if(highlight.side == "back"){
+      else if(highlight.curSide == "back"){
         highlighterColor = SECONDARY_HIGHLIGHTER_COLOR
       }
     }

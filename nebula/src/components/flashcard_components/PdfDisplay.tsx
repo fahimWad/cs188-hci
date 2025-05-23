@@ -25,12 +25,15 @@ const PdfDisplay: React.FC = () => {
     front: "",
     back: "",
   });
+
   const highlighterUtilsRef = useRef<PdfHighlighterUtils | null>(null);
+
+  // Handlers
   const addHighlight = (highlight: GhostHighlight) => {
     // Use to actually save highlight
     const newHighlight: CustomHighlight = {
       ...highlight,
-      side: front ? "front" : "back",
+      curSide: front ? "front" : "back",
       flashcardID: getID(),
       id: String(getID()),
       active: true,
@@ -46,6 +49,7 @@ const PdfDisplay: React.FC = () => {
       back: "",
     });
   };
+
   return (
     <div className="relative w-screen h-screen">
       <div className="h-full absolute left-0 top-0 w-screen overflow-hidden">
@@ -100,15 +104,15 @@ const PdfDisplay: React.FC = () => {
           )}
         </PdfLoader>
       </div>
-      <FloatingFlashcard
-        flashcard={currentFlashcard}
-        onFlip={() => {
-          switchSide((prev) => !prev);
-        }}
-      />
       <div className="absolute top-0 right-0 h-full w-[300px] z-[200]">
+        <FloatingFlashcard
+          flashcard={currentFlashcard}
+          onFlip={() => {
+            switchSide((prev) => !prev);
+          }}
+          onConfirm={confirmClick}
+        />
         <Sidebar initialCards={flashcards} />
-        <ConfirmButton onClick={confirmClick} />
       </div>
     </div>
   );
