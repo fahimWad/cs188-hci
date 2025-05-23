@@ -48,13 +48,13 @@ const Flashcard: React.FC<FlashcardProps> = ({
       onDoubleClick={handleDoubleClick}
       className={`
       relative group
-      bg-white rounded-xl shadow-md
+      bg-secondary-2 rounded-xl shadow-md
       h-20 flex items-center justify-center
-      cursor-pointer px-8 py-12 text-center
+      cursor-pointer px-8 py-12 text-center text-white
       transition
       overflow-hidden
       ring-4 ease-in-out duration-200
-      ${isActive ? "ring-[#CCC4FF]" : "ring-transparent"}
+      ${isActive ? "ring-primary-3" : "ring-transparent"}
       `}
     >
       {/* <span

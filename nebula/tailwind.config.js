@@ -29,6 +29,7 @@ module.exports = {
           DEFAULT: '#FFFFFF',
           '70': 'rgba(255, 255, 255, 0.7)',   // "White", 70% opacity
           '50': 'rgba(255, 255, 255, 0.5)',   // "White", 50% opacity
+          '25': 'rgba(255, 255, 255, 0.25)',
           '10': 'rgba(255, 255, 255, 0.1)',   // "White", 10% opacity
           '6': 'rgba(255, 255, 255, 0.06)',   // "White", 6% opacity
         }

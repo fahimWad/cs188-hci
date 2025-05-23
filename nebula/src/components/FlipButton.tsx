@@ -8,7 +8,7 @@ interface FlipButtonProps {
 export default function FlipButton({ onClick}:FlipButtonProps) {
   return (
     <button
-      className='p-0.5 mr-2 rounded-lg border-2 border-[#CCC4FF] bg-transparent hover:bg-[#CCC4FF] font-size-sm cursor-pointer'
+      className='p-0.5 mr-2 rounded-lg border-2 border-primary-3 text-white text-xl bg-transparent hover:bg-primary-3 font-size-sm cursor-pointer'
         type="button"
         onClick={onClick}
         aria-label="Flip"

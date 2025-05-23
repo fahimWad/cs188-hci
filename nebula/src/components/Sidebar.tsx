@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ cards, setCards }) => {
 
   return (
     <div
-      className="sidebar bg-[#878787]/[0.6] rounded-3xl w-[300px] h-screen p-8 flex flex-col box-ring gap-4 absolute x-500 y-0 z-100"
+      className="sidebar bg-secondary-1 w-[300px] h-screen p-8 flex flex-col box-ring gap-4 absolute x-500 y-0 z-100"
     >
       {/* --- search input -------------------------------------------------- */}
       <input
@@ -33,10 +33,15 @@ const Sidebar: React.FC<SidebarProps> = ({ cards, setCards }) => {
         placeholder="Search..."
         value={search}
         onChange={e => setSearch(e.target.value)}
-        className="rounded-full px-4 py-2 w-full"
+        className="rounded-full bg-white-6 text-white-50 px-4 py-2 w-full"
       />
 
       {/* --- flashcard list with hover ring ------------------------------------------------ */}
+      {filtered.length === 0  && 
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-white-50">No flashcards created</p>
+        </div>
+      }
       <div className="flex flex-col gap-4 overflow-visible">
         {filtered.map(card => {
           const cardKey = card.id ?? card.front;
