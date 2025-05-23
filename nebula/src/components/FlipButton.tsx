@@ -9,9 +9,11 @@ interface FlipButtonProps {
 export default function FlipButton({ onClick, isActive }:FlipButtonProps) {
   return (
     <button
-      className={`p-0.5 mr-2 rounded-lg border-2 border-primary-3 text-white text-xl bg-transparent hover:bg-primary-3 font-size-sm cursor-pointer ${isActive ? 'opacity-100' : 'opacity-50'}`}
+      className={`p-0.5 mr-2 rounded-lg border-2 border-primary-3 text-white text-xl bg-transparent font-size-sm ${isActive ? 'opacity-100 hover:bg-primary-3 cursor-pointer' : 'opacity-50'}`}
         type="button"
         onClick={onClick}
+        disabled={!isActive}
+        aria-disabled={!isActive}
         aria-label="Flip"
         title="Flip"
     >
