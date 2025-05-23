@@ -31,12 +31,14 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
         <div>
           {/* Flip button */}
           <FlipButton
+            isActive={flashcard.front.length > 0}
             onClick={() => {
               onFlip();
               setFlipped((prev) => !prev);
             }} />
-            {/* Confirm button */}
+          {/* Confirm button */}
           <ConfirmButton
+            isActive={flashcard.front.length > 0 && flashcard.back.length > 0}
             onClick={() => {
               onConfirm();
               setFlipped(false);
