@@ -24,7 +24,6 @@ const Flashcard: React.FC<FlashcardProps> = ({
   editing,
   flipped,
   onSelect,
-  onEdit,
   onFlip,
 }) => {
   const autoId = useId();
@@ -53,24 +52,31 @@ const Flashcard: React.FC<FlashcardProps> = ({
       h-20 flex items-center justify-center
       cursor-pointer px-8 py-12 text-center
       transition
+      overflow-hidden
       ring-4 ease-in-out duration-200
       ${isActive ? "ring-[#CCC4FF]" : "ring-transparent"}
       `}
     >
-      <span
+      {/* <span
       className="
-        absolute top-2 right-2 flex gap-2
-        opacity-0 group-hover:opacity-100 transition-opacity
+      absolute top-2 right-2 flex gap-2
+      opacity-0 group-hover:opacity-100 transition-opacity
       "
       onClick={e => e.stopPropagation()}
       >
       <button className="cursor-pointer">🗑️</button>
       <button className="cursor-pointer">📋</button>
-      </span>
+      </span> */}
 
       {/* cannot edit in sidebar view */}
-      <span className={`text-lg ${selected ? 'font-bold' : 'font-light'}`}>
-        {flipped ? backText : frontText}
+      <span
+      className={`
+        text-lg
+        ${selected ? 'font-bold' : 'font-light'}
+      `}
+      style={{ maxWidth: '100%' }}
+      >
+      {flipped ? backText : frontText}
       </span>
     </div>
   );
