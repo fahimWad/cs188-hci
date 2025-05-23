@@ -1,22 +1,15 @@
 import React, { useState } from 'react';
-import IconComponent from './IconComponent';
 import Flashcard, { FlashcardData } from './Flashcard';
 import CollapseButton from './CollapseButton';
+import DeleteButton from './DeleteButton';
+import { CustomHighlight } from './Highlights';
 
 interface SidebarProps {
-    initialCards: FlashcardData[];
+    cards: FlashcardData[];
+    setCards: React.Dispatch<React.SetStateAction<FlashcardData[]>>;
 }
 
-// const initialCards: FlashcardData[] = [
-//   { id: 1, front: 'origins of replication',  back: 'definition or answer' },
-//   { id: 2, front: 'dispersive model',        back: 'definition or answer' },
-//   { id: 3, front: 'conservative model',      back: 'definition or answer' },
-//   { id: 4, front: 'semiconservative model',  back: 'definition or answer' },
-//   { id: 5, front: "Chargaff’s rules",        back: 'definition or answer' },
-//   { id: 6, front: 'Transformation',          back: 'definition or answer' },
-// ];
-
-const Sidebar: React.FC<SidebarProps> = ({ initialCards }) => {
+const Sidebar: React.FC<SidebarProps> = ({ cards, setCards }) => {
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
   const [editingId,  setEditingId]  = useState<string | number | null>(null);
   const [flippedId,  setFlippedId]  = useState<string | number | null>(null);
@@ -26,8 +19,8 @@ const Sidebar: React.FC<SidebarProps> = ({ initialCards }) => {
   // ------------------------------------------------------------
   // search filter
   // ------------------------------------------------------------
-  const filtered = initialCards.filter(c =>
-    c.front.toLowerCase().includes(search.toLowerCase())
+  const filtered = cards.filter(c =>
+    c.front.toLowerCase().includes(search.toLowerCase()) || c.back.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -69,6 +62,19 @@ const Sidebar: React.FC<SidebarProps> = ({ initialCards }) => {
                   )
                 }
               />
+                <div className={`-translate-y-1/4 w-full flex flex-row items-center justify-center ${hoveredId === cardKey ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+                  <DeleteButton
+                  key={cardKey}
+                  color='lavender'
+                  onClick={() => {
+                    setCards(prev => prev.filter(c => (c.id ?? c.front) !== cardKey));
+                    if (selectedId === cardKey) setSelectedId(null);
+                    if (editingId === cardKey) setEditingId(null);
+                    if (flippedId === cardKey) setFlippedId(null);
+                    if (hoveredId === cardKey) setHoveredId(null);
+                  }}
+                  />
+                </div>
             </div>
           );
         })}

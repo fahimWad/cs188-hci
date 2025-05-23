@@ -15,7 +15,6 @@ import FloatingFlashcard from "../components/FloatingFlashcard";
 import Sidebar from "../components/Sidebar";
 import { CustomHighlight } from "../components/Highlights";
 import HighlighterContainer from "./HighlighterContainer";
-import ConfirmButton from "./ConfirmButton";
 const PdfDisplay: React.FC = () => {
   const [highlights, setHighlights] = useState<Array<CustomHighlight>>([]); // Actual array storing highlights
   const [front, switchSide] = useState<boolean>(true); // false = selecting back of flashcard, true = selecting front of flashcard
@@ -38,13 +37,25 @@ const PdfDisplay: React.FC = () => {
       return [newHighlight, ...pastHighlights];
     });
   };
-  const confirmClick = () => {
+  const handleConfirm = () => {
     setFlashcards((prev) => [...prev, currentFlashcard]);
     setCurFlashcard({
       front: "",
       back: "",
     });
+    switchSide((prev) => true);
   };
+
+  const handleDelete = () => {
+    setFlashcards((prev) =>
+      prev.filter(
+        (card) =>
+          card.front !== currentFlashcard.front ||
+          card.back !== currentFlashcard.back
+      )
+    );
+    setCurFlashcard({ front: "", back: "" });
+  }
   return (
     <div className="relative w-screen h-screen">
       <div className="h-full absolute left-0 top-0 w-screen overflow-hidden">
@@ -75,7 +86,7 @@ const PdfDisplay: React.FC = () => {
                     //switchSide((side) => !side);
                   } else if (!front) {
                     const completeFlashcard = {
-                      id: getID(),
+                      id: getNewID(),
                       front: currentFlashcard.front ?? "",
                       back: [
                         currentFlashcard.back ?? "",
@@ -104,10 +115,11 @@ const PdfDisplay: React.FC = () => {
         onFlip={() => {
           switchSide((prev) => !prev);
         }}
+        onConfirm= {handleConfirm}
+        onDelete= {handleDelete}
       />
       <div className="absolute top-0 right-0 h-full w-[300px] z-[200]">
-        <Sidebar initialCards={flashcards} />
-        <ConfirmButton onClick={confirmClick}></ConfirmButton>
+        <Sidebar cards={flashcards} setCards={setFlashcards} />
       </div>
     </div>
   );

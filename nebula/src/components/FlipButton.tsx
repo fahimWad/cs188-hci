@@ -1,24 +1,20 @@
 
 import React from 'react';
+import { FaArrowsRotate } from "react-icons/fa6";
+
 interface FlipButtonProps {
-  onClick: any, // I do not care this is bad syntax, fix it later
-
-
+  onClick: () => void;
 }
-export default function QuickButton({ onClick}:FlipButtonProps) {
+export default function FlipButton({ onClick}:FlipButtonProps) {
   return (
     <button
-      onClick={onClick}
-      style={{
-        padding: '0.4rem 0.8rem',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        background: 'white',
-        cursor: 'pointer',
-        fontSize: '0.9rem',
-      }}
+      className='p-0.5 mr-2 rounded-lg border-2 border-[#CCC4FF] bg-transparent hover:bg-[#CCC4FF] font-size-sm cursor-pointer'
+        type="button"
+        onClick={onClick}
+        aria-label="Flip"
+        title="Flip"
     >
-      Flip
+      <FaArrowsRotate />
     </button>
   );
 }

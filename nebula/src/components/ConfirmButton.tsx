@@ -1,22 +1,18 @@
 import React from "react";
+import { IoMdCheckmark } from "react-icons/io";
+
 interface FlipButtonProps {
-  onClick: any; // I do not care this is bad syntax, fix it later
+  onClick: () => void;
 }
 export default function ConfirmButton({ onClick }: FlipButtonProps) {
   return (
     <button
       onClick={onClick}
-      style={{
-        padding: "0.4rem 0.8rem",
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-        background: "white",
-        cursor: "pointer",
-        fontSize: "0.9rem",
-        backgroundColor: "green",
-      }}
+      type="button"
+      className="p-0.5 rounded-lg border-2 border-green-500 bg-transparent hover:bg-green-500 cursor-pointer aria-label='Confirm'"
+      title="Confirm"
     >
-      Y
+      <IoMdCheckmark />
     </button>
   );
 }
