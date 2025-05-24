@@ -98,7 +98,7 @@ const PdfDisplay: React.FC = () => {
   }, [activateHighlights]);
   return (
     <div className="relative w-screen h-screen">
-      <div className="h-full absolute left-0 top-0 w-screen overflow-hidden">
+      <div className="h-full relative w-[88vw] overflow-hidden p-0">
         <PdfLoader document="/designPDF.pdf">
           {(pdfDocument) => (
             <div className="absolute inset-0">
