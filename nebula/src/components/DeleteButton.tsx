@@ -6,23 +6,26 @@ type DeleteButtonProps = {
     color: string;
     disabled?: boolean;
     children?: React.ReactNode;
+    isVisible?: boolean;
 };
 
 const colorClassMap: { [key: string]: string } = {
-    red: 'border-red-500 hover:bg-red-500 text-white',
-    lavender: 'border-primary-3 bg-primary-3 text-white',          // no hovering animation, just override solid color for sidebar
+    red: 'text-red-500 -translate-x-1/4',
+    lavender: 'border-primary-3 bg-primary-3 text-white text-xl',          // no hovering animation, just override solid color for sidebar
 };
 
 const DeleteButton: React.FC<DeleteButtonProps> = ({
     onClick,
     color,
+    isVisible,
 }) => (
     <button
         className={`
-            p-0.5 rounded-lg border-2
-            transition-colors
-            text-xl cursor-pointer
+            p-0.5 rounded-lg
+            cursor-pointer
+            opacity-0
             ${colorClassMap[color] || ''}
+            ${isVisible ? 'opacity-100' : ''}
         `}
         type="button"
         onClick={onClick}
