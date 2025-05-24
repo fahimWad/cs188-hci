@@ -7,7 +7,7 @@ import {
   PdfHighlighterUtils,
   GhostHighlight,
 } from "react-pdf-highlighter-extended";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { getID, getNewID } from "../utils/flashCardID";
 import "react-pdf-highlighter/dist/style.css";
 import Flashcard, { FlashcardData } from "../components/Flashcard";
@@ -20,11 +20,16 @@ const PdfDisplay: React.FC = () => {
   const [highlights, setHighlights] = useState<Array<CustomHighlight>>([]); // Actual array storing highlights
   const [front, switchSide] = useState<boolean>(true); // false = selecting back of flashcard, true = selecting front of flashcard
   const [flashcards, setFlashcards] = useState<Array<FlashcardData>>([]); // Array storing flashcard information
-  const [pendingFlashcardId, setPendingFlashcardId] = useState<number | null>(null); // ID of flashcard being edited
-  const [currentFlashcard, setCurFlashcard] = useState<FlashcardData>({
-    front: "",
-    back: "",
-  });
+  const [pendingFlashcardId, setPendingFlashcardId] = useState<number | null>(
+    null
+  ); // ID of flashcard being edited
+  const createNewFlashcard = () => {
+    const newID: number = getNewID();
+    setPendingFlashcardId(newID);
+    return { front: "", back: "", id: String(newID) };
+  };
+  const [currentFlashcard, setCurFlashcard] =
+    useState<FlashcardData>(createNewFlashcard);
   const highlighterUtilsRef = useRef<PdfHighlighterUtils | null>(null);
 
   const addHighlight = (highlight: GhostHighlight) => {
@@ -46,12 +51,27 @@ const PdfDisplay: React.FC = () => {
 
   const handleConfirm = () => {
     setFlashcards((prev) => [...prev, currentFlashcard]);
-    setCurFlashcard({
-      front: "",
-      back: "",
+    console.log(currentFlashcard.id);
+    setCurFlashcard(createNewFlashcard());
+    switchSide(true); // Always front when moving on to new flashcard
+    unactiveHighlights();
+  };
+  const unactiveHighlights = () => {
+    highlights.forEach((highlight: CustomHighlight) => {
+      highlight.active = false;
     });
+  };
+  const activateHighlights = (flashcardId: number) => {
+    setHighlights((prev) =>
+      prev.map((h) =>
+        h.flashcardID === flashcardId
+          ? { ...h, active: true }
+          : { ...h, active: false }
+      )
+    );
+
     setPendingFlashcardId(null);
-    switchSide((prev) => true);
+    switchSide(true); // reset to front
   };
 
   const handleDelete = () => {
@@ -63,10 +83,20 @@ const PdfDisplay: React.FC = () => {
       )
     );
     setPendingFlashcardId(null);
-    setHighlights((prev) => prev.filter((h) => h.flashcardID !== currentFlashcard.id));
-    setCurFlashcard({ front: "", back: "" });
-  }
+    setHighlights((prev) =>
+      prev.filter((h) => String(h.flashcardID) !== currentFlashcard.id)
+    );
+    setCurFlashcard({ front: "", back: "", id: String(getNewID()) });
+  };
+  useEffect(() => {
+    const onHashChange = () => {
+      const id = parseInt(document.location.hash.slice("#highlight-".length));
+      if (!Number.isNaN(id)) activateHighlights(id);
+    };
 
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, [activateHighlights]);
   return (
     <div className="relative w-screen h-screen">
       <div className="h-full absolute left-0 top-0 w-screen overflow-hidden">
@@ -86,7 +116,7 @@ const PdfDisplay: React.FC = () => {
                     const newId = pendingFlashcardId ?? getNewID();
                     setPendingFlashcardId(newId);
                     const nextFlashcard = {
-                      id: newId,
+                      id: String(newId),
                       front: [
                         currentFlashcard.front ?? "",
                         (currentFlashcard.front ?? "").trimEnd().length
@@ -100,7 +130,7 @@ const PdfDisplay: React.FC = () => {
                     //switchSide((side) => !side);
                   } else if (!front) {
                     const completeFlashcard = {
-                      id: pendingFlashcardId ?? getID(),
+                      id: String(pendingFlashcardId ?? getID()),
                       front: currentFlashcard.front ?? "",
                       back: [
                         currentFlashcard.back ?? "",
@@ -129,11 +159,16 @@ const PdfDisplay: React.FC = () => {
         onFlip={() => {
           switchSide((prev) => !prev);
         }}
-        onConfirm= {handleConfirm}
-        onDelete= {handleDelete}
+        onConfirm={handleConfirm}
+        onDelete={handleDelete}
       />
       <div className="absolute top-0 right-0 h-full w-[300px] z-[200]">
-        <Sidebar cards={flashcards} setCards={setFlashcards} setHighlights={setHighlights} highlights={highlights}/>
+        <Sidebar
+          cards={flashcards}
+          setCards={setFlashcards}
+          setHighlights={setHighlights}
+          highlights={highlights}
+        />
       </div>
     </div>
   );
