@@ -20,6 +20,7 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 	//   // Only render if there is text to show.
 	//   if (!flashcard || (!flashcard.front && !flashcard.back)) return null;
 	const [flipped, setFlipped] = React.useState(false);
+  const [editable, setEditable] = React.useState(false);
 	return (
 		<div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 translate-x-12 bg-transparent text-white-50 rounded-xl z-50 w-[400px] h-[250px] [perspective:1000px] flex flex-col">
 			{/* Flashcard flip section */}
@@ -62,10 +63,24 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 							/>
 						</div>
 					</div>
+          
 					{flashcard.front.length > 0 ? (
-						<p className="text-center p-2 text-white">
-							{flashcard.front}
-						</p>
+            <div
+              contentEditable={editable}
+              suppressContentEditableWarning={true}
+              onClick={() => setEditable(true)}
+              onBlur={() => setEditable(false)}
+              onInput={(e) => {
+              const newText = e.currentTarget.textContent;
+              if (newText !== null) {
+                flashcard.front = newText;
+              }
+              }}
+            >
+              <p className="text-center p-2 text-white hover:underline hover:underline-offset-8 cursor-pointer decoration-4 decoration-primary-3">
+              {flashcard.front}
+              </p>
+            </div>
 					) : (
 						<div>
 							<p className="text-center font-bold">New Term</p>
@@ -111,9 +126,22 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 						</div>
 					</div>
 					{flashcard.back.length > 0 ? (
-						<p className="text-center p-2 text-white">
-							{flashcard.back}
-						</p>
+						<div
+              contentEditable={editable}
+              suppressContentEditableWarning={true}
+              onClick={() => setEditable(true)}
+              onBlur={() => setEditable(false)}
+              onInput={(e) => {
+              const newText = e.currentTarget.textContent;
+              if (newText !== null) {
+                flashcard.back = newText;
+              }
+              }}
+            >
+              <p className="text-left text-sm font-light p-2 text-white hover:underline hover:underline-offset-8 cursor-pointer decoration-4 decoration-primary-3">
+              {flashcard.back}
+              </p>
+            </div>
 					) : (
 						<p className="text-center p-2 font-light">
 							Select text from PDF
