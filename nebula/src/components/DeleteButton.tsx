@@ -10,7 +10,7 @@ type DeleteButtonProps = {
 };
 
 const colorClassMap: { [key: string]: string } = {
-    red: 'text-red-500',
+    red: 'text-red-500 -translate-x-1/4',
     lavender: 'border-primary-3 bg-primary-3 text-white text-xl',          // no hovering animation, just override solid color for sidebar
 };
 
@@ -22,7 +22,6 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
     <button
         className={`
             p-0.5 rounded-lg
-            -translate-x-1/4
             cursor-pointer
             opacity-0
             ${colorClassMap[color] || ''}
