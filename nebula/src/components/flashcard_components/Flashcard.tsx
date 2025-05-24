@@ -1,7 +1,7 @@
-import React, { useState, useId } from 'react';
+import React, { useState, useId } from "react";
 
 export interface FlashcardData {
-  id?: number | string;
+  id: string;
   front: string;
   back: string;
 }
@@ -24,14 +24,13 @@ const Flashcard: React.FC<FlashcardProps> = ({
   editing,
   flipped,
   onSelect,
-  onEdit,
   onFlip,
 }) => {
   const autoId = useId();
   const id = card.id ?? autoId;
 
   const [frontText, setFrontText] = useState(card.front);
-  const [backText, setBackText]   = useState(card.back);
+  const [backText, setBackText] = useState(card.back);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -49,27 +48,34 @@ const Flashcard: React.FC<FlashcardProps> = ({
       onDoubleClick={handleDoubleClick}
       className={`
       relative group
-      bg-white rounded-xl shadow-md
+      bg-secondary-2 rounded-xl shadow-md
       h-20 flex items-center justify-center
-      cursor-pointer px-8 py-12 text-center
+      cursor-pointer px-8 py-12 text-center text-white
       transition
+      overflow-hidden
       ring-4 ease-in-out duration-200
-      ${isActive ? "ring-[#CCC4FF]" : "ring-transparent"}
+      ${isActive ? "ring-primary-3" : "ring-transparent"}
       `}
     >
-      <span
+      {/* <span
       className="
-        absolute top-2 right-2 flex gap-2
-        opacity-0 group-hover:opacity-100 transition-opacity
+      absolute top-2 right-2 flex gap-2
+      opacity-0 group-hover:opacity-100 transition-opacity
       "
       onClick={e => e.stopPropagation()}
       >
       <button className="cursor-pointer">🗑️</button>
       <button className="cursor-pointer">📋</button>
-      </span>
+      </span> */}
 
       {/* cannot edit in sidebar view */}
-      <span className={`text-lg ${selected ? 'font-bold' : 'font-light'}`}>
+      <span
+        className={`
+        text-lg
+        ${selected ? "font-bold" : "font-light"}
+      `}
+        style={{ maxWidth: "100%" }}
+      >
         {flipped ? backText : frontText}
       </span>
     </div>

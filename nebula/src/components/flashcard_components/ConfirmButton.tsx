@@ -1,22 +1,23 @@
 import React from "react";
+import { IoMdCheckmark } from "react-icons/io";
+
 interface FlipButtonProps {
-  onClick: any; // I do not care this is bad syntax, fix it later
+  onClick: () => void;
+  isActive: boolean;
+  isVisible: boolean;
 }
-export default function ConfirmButton({ onClick }: FlipButtonProps) {
+export default function ConfirmButton({ onClick, isActive, isVisible }: FlipButtonProps) {
   return (
     <button
       onClick={onClick}
-      style={{
-        padding: "0.4rem 0.8rem",
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-        background: "white",
-        cursor: "pointer",
-        fontSize: "0.9rem",
-        backgroundColor: "green",
-      }}
+      type="button"
+      className={`text-green-500 aria-label='Confirm' opacity-0 ${isActive ? 'cursor-pointer' : ''} ${isVisible && isActive ? 'opacity-100' : ''}`}
+      title="Confirm"
+      disabled={!isActive}
+      aria-disabled={!isActive}
+      aria-label="Confirm"
     >
-      Y
+      <IoMdCheckmark />
     </button>
   );
 }
