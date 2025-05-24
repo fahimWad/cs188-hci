@@ -24,12 +24,21 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 	const [hover, setHover] = React.useState(false);
 
 	return (
-		<div className="bg-transparent text-white-50 rounded-xl w-full h-[200px] [perspective:1000px] flex flex-col">
+		<div
+			className="
+			bg-transparent text-white-50 rounded-xl w-full h-[200px]
+			[perspective:1000px] [-webkit-perspective:1000px]
+			flex flex-col
+			"
+		>
 			{/* Flashcard flip section */}
 			<div
-				className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ring-primary-3 ring-4 rounded-xl ${
-					flipped ? "[transform:rotateX(180deg)]" : ""
-				}`}
+				className={`
+					relative w-full h-full transition-transform duration-700
+					[transform-style:preserve-3d] [-webkit-transform-style:preserve-3d]
+					ring-primary-3 ring-4 rounded-xl
+					${flipped ? "[transform:rotateX(180deg)]" : ""}
+				`}
 				onMouseEnter={() => {
 					setHover(true);
 				}}
@@ -39,10 +48,14 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 			>
 				{/* Flashcard front */}
 				<div
-					className="absolute inset-0 flex items-center justify-center
-            bg-secondary-2 border border-primary-3 rounded-xl shadow
-            text-xl font-bold
-            [backface-visibility:hidden] overflow-auto"
+					className="
+					absolute inset-0 flex items-center justify-center
+					bg-secondary-2 border border-primary-3 rounded-xl shadow
+					text-xl font-bold
+					[transform:rotateX(0deg)] [-webkit-transform:rotateX(0deg)]
+					[backface-visibility:hidden] [-webkit-backface-visibility:hidden]
+					overflow-auto
+					"
 				>
 					{/* Flashcard header */}
 					<div
@@ -103,13 +116,17 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 						</div>
 					)}
 				</div>
+
 				{/* Flashcard back */}
 				<div
-					className="absolute inset-0 flex items-center justify-center
-            bg-secondary-2 border border-primary-3 rounded-xl shadow
-            text-xl font-bold
-            [transform:rotateX(180deg)]
-            [backface-visibility:hidden] overflow-auto"
+					className="
+					absolute inset-0 flex items-center justify-center
+					bg-secondary-2 border border-primary-3 rounded-xl shadow
+					text-xl font-bold
+					[transform:rotateX(180deg)] [-webkit-transform:rotateX(180deg)]
+					[backface-visibility:hidden] [-webkit-backface-visibility:hidden]
+					overflow-auto
+					"
 				>
 					{/* Flashcard header */}
 					<div
