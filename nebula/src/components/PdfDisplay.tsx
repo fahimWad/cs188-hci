@@ -11,7 +11,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { getID, getNewID } from "../utils/flashCardID";
 import "react-pdf-highlighter/dist/style.css";
 import Flashcard, { FlashcardData } from "../components/Flashcard";
-import FloatingFlashcard from "../components/FloatingFlashcard";
 import Sidebar from "../components/Sidebar";
 import { CustomHighlight } from "../components/Highlights";
 import HighlighterContainer from "./HighlighterContainer";
@@ -154,20 +153,18 @@ const PdfDisplay: React.FC = () => {
           )}
         </PdfLoader>
       </div>
-      <FloatingFlashcard
-        flashcard={currentFlashcard}
-        onFlip={() => {
-          switchSide((prev) => !prev);
-        }}
-        onConfirm={handleConfirm}
-        onDelete={handleDelete}
-      />
       <div className="absolute top-0 right-0 h-full w-[300px] z-[200]">
         <Sidebar
           cards={flashcards}
           setCards={setFlashcards}
           setHighlights={setHighlights}
           highlights={highlights}
+          flashcard={[currentFlashcard]}
+          onFlip={() => {
+            switchSide((prev) => !prev);
+          }}
+          onConfirm={handleConfirm}
+          onDelete={handleDelete}
         />
       </div>
     </div>

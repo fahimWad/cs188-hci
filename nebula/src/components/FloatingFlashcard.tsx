@@ -21,13 +21,17 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 	//   if (!flashcard || (!flashcard.front && !flashcard.back)) return null;
 	const [flipped, setFlipped] = React.useState(false);
   const [editable, setEditable] = React.useState(false);
+  const [hover, setHover] = React.useState(false);
+
 	return (
-		<div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 translate-x-12 bg-transparent text-white-50 rounded-xl z-50 w-[400px] h-[250px] [perspective:1000px] flex flex-col">
+		<div className="fixed bottom-4 -translate-x-[40%] transform bg-transparent text-white-50 rounded-xl z-50 w-[400px] h-[250px] [perspective:1000px] flex flex-col">
 			{/* Flashcard flip section */}
 			<div
 				className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ring-primary-3 ring-4 rounded-xl ${
 					flipped ? "[transform:rotateX(180deg)]" : ""
-				}`}
+				}`} 
+        onMouseEnter={() => {setHover(true)}}
+        onMouseLeave={() => {setHover(false)}}
 			>
 				{/* Flashcard front */}
 				<div
@@ -41,16 +45,9 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 						className={`absolute top-0 left-0 w-full flex justify-between items-center px-4 py-2 z-20 pointer-events-auto`}
 					>
 						{/* Delete Button (top left) */}
-						<DeleteButton color="red" onClick={onDelete} />
+						<DeleteButton color="red" onClick={onDelete} isVisible={hover}/>
 						{/* Flip and Confirm buttons (top right) */}
 						<div className="flex gap-2">
-							<FlipButton
-								isActive={flashcard.front.length > 0}
-								onClick={() => {
-									onFlip();
-									setFlipped((prev) => !prev);
-								}}
-							/>
 							<ConfirmButton
 								isActive={
 									flashcard.front.length > 0 &&
@@ -59,6 +56,14 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 								onClick={() => {
 									onConfirm();
 									setFlipped(false);
+								}}
+                isVisible={hover}
+							/>
+              <FlipButton
+								isActive={flashcard.front.length > 0}
+								onClick={() => {
+									onFlip();
+									setFlipped((prev) => !prev);
 								}}
 							/>
 						</div>
@@ -103,16 +108,15 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 						className={`absolute top-0 left-0 w-full flex justify-between items-center px-4 py-2 z-20 pointer-events-auto [transform:rotateX(180deg)]"}`}
 					>
 						{/* Delete Button (top left) */}
-						<DeleteButton color="red" onClick={onDelete} />
+						<DeleteButton color="red" onClick={onDelete} isVisible={hover}/>
+            {/* Front text */}
+            <div className="flex-1 flex items-center justify-center overflow-hidden mx-2">
+              <span className="truncate text-white text-base font-semibold translate-x-[7%]">
+                {flashcard.front}
+              </span>
+            </div>
 						{/* Flip and Confirm buttons (top right) */}
 						<div className="flex gap-2">
-							<FlipButton
-								isActive={flashcard.front.length > 0}
-								onClick={() => {
-									onFlip();
-									setFlipped((prev) => !prev);
-								}}
-							/>
 							<ConfirmButton
 								isActive={
 									flashcard.front.length > 0 &&
@@ -121,6 +125,14 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 								onClick={() => {
 									onConfirm();
 									setFlipped(false);
+								}}
+                isVisible={hover}
+							/>
+              <FlipButton
+								isActive={flashcard.front.length > 0}
+								onClick={() => {
+									onFlip();
+									setFlipped((prev) => !prev);
 								}}
 							/>
 						</div>

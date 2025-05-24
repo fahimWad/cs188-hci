@@ -3,12 +3,17 @@ import Flashcard, { FlashcardData } from "./Flashcard";
 import CollapseButton from "./CollapseButton";
 import DeleteButton from "./DeleteButton";
 import { CustomHighlight } from "./Highlights";
+import FloatingFlashcard from "./FloatingFlashcard";
 
 interface SidebarProps {
   cards: FlashcardData[];
   setCards: React.Dispatch<React.SetStateAction<FlashcardData[]>>;
   setHighlights: React.Dispatch<React.SetStateAction<CustomHighlight[]>>;
   highlights: CustomHighlight[];
+  flashcard: FlashcardData[];
+  onFlip: () => void;
+  onConfirm: () => void;
+  onDelete: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -16,6 +21,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   setCards,
   highlights,
   setHighlights,
+  flashcard,
+  onFlip,
+  onConfirm,
+  onDelete,
 }) => {
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
   const [editingId, setEditingId] = useState<string | number | null>(null);
@@ -98,12 +107,20 @@ const Sidebar: React.FC<SidebarProps> = ({
                     if (flippedId === cardKey) setFlippedId(null);
                     if (hoveredId === cardKey) setHoveredId(null);
                   }}
+                  isVisible={hoveredId === cardKey}
                 />
               </div>
             </div>
           );
         })}
       </div>
+      {/* Floating flashcard */}
+      <FloatingFlashcard
+              flashcard={flashcard[0]}
+              onFlip={onFlip}
+              onConfirm={onConfirm}
+              onDelete={onDelete}
+            />
     </div>
   );
 };
