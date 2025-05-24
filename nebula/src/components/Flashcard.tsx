@@ -1,7 +1,7 @@
-import React, { useState, useId } from 'react';
+import React, { useState, useId } from "react";
 
 export interface FlashcardData {
-  id?: number | string;
+  id: string;
   front: string;
   back: string;
 }
@@ -30,7 +30,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
   const id = card.id ?? autoId;
 
   const [frontText, setFrontText] = useState(card.front);
-  const [backText, setBackText]   = useState(card.back);
+  const [backText, setBackText] = useState(card.back);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -70,13 +70,13 @@ const Flashcard: React.FC<FlashcardProps> = ({
 
       {/* cannot edit in sidebar view */}
       <span
-      className={`
+        className={`
         text-lg
-        ${selected ? 'font-bold' : 'font-light'}
+        ${selected ? "font-bold" : "font-light"}
       `}
-      style={{ maxWidth: '100%' }}
+        style={{ maxWidth: "100%" }}
       >
-      {flipped ? backText : frontText}
+        {flipped ? backText : frontText}
       </span>
     </div>
   );
