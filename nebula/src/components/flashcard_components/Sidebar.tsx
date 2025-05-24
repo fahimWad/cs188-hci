@@ -54,14 +54,14 @@ const Sidebar: React.FC<SidebarProps> = ({
 				className="rounded-full bg-white-6 text-white-50 px-4 py-2 w-full"
 			/>
 
-			<div className="flex-1 overflow-y-auto pr-1">
+			<div className="flex-1 overflow-y-auto px-1 py-1">
 				{/* --- flashcard list with hover ring ------------------------------------------------ */}
 				{filtered.length === 0 ? (
 					<div className="flex items-center justify-center h-full">
 						<p className="text-white-25">No flashcards created</p>
 					</div>
 				) : (
-					<div className="flex flex-col gap-4">
+					<div className="flex flex-col gap-4 overflow-visible">
 						{filtered.map((card: FlashcardData) => {
 							const cardKey: string | number =
 								card.id ?? card.front;
