@@ -2,7 +2,6 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 // import FlashcardPage from './pages/FlashcardPage';
-//import PdfDisplay from './pages/PdfDisplay2';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import PdfDisplay from './pages/PdfDisplay.tsx';
 import Graph from './pages/Graph.tsx';
@@ -18,8 +17,3 @@ function App() {
   );
 }
 export default App;
-    // {/* <div className="App" style={{ display: "flex", height: "100vh" }}>
-    //   <PdfDisplay />
-    // </div> */}
-
-
