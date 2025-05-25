@@ -8,13 +8,13 @@ import {
   GhostHighlight,
 } from "react-pdf-highlighter-extended";
 import React, { useRef, useState, useEffect } from "react";
-import { getID, getNewID } from "../../utils/flashCardID";
+import { getID, getNewID } from "../utils/flashCardID";
 import "react-pdf-highlighter/dist/style.css";
-import Flashcard, { FlashcardData } from "./Flashcard";
-import Sidebar from "./Sidebar";
-import PageNav from "./PageNav";
-import { CustomHighlight } from "./Highlights";
-import HighlighterContainer from "./HighlighterContainer";
+import Flashcard, { FlashcardData } from "../components/flashcard_components/Flashcard";
+import Sidebar from "../components/flashcard_components/Sidebar";
+import PageNav from "../components/flashcard_components/PageNav";
+import { CustomHighlight } from "../components/flashcard_components/Highlights";
+import HighlighterContainer from "../components/flashcard_components/HighlighterContainer";
 
 const PdfDisplay: React.FC = () => {
   const [highlights, setHighlights] = useState<Array<CustomHighlight>>([]); // Actual array storing highlights

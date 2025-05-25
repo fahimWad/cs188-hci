@@ -1,4 +1,4 @@
-import PageNav from "../flashcard_components/PageNav";
+import PageNav from "../components/flashcard_components/PageNav";
 
 const Graph: React.FC = () => {
     return (
