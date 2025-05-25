@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path = "/" element={<PdfDisplay />} />
+        <Route path = "/pdf" element={<PdfDisplay />} />
       </Routes>
     </Router>
   );

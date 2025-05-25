@@ -12,6 +12,7 @@ import { getID, getNewID } from "../../utils/flashCardID";
 import "react-pdf-highlighter/dist/style.css";
 import Flashcard, { FlashcardData } from "./Flashcard";
 import Sidebar from "./Sidebar";
+import PageNav from "./PageNav";
 import { CustomHighlight } from "./Highlights";
 import HighlighterContainer from "./HighlighterContainer";
 
@@ -98,6 +99,10 @@ const PdfDisplay: React.FC = () => {
   }, [activateHighlights]);
   return (
     <div className="relative w-screen h-screen">
+      {/* <div className="absolute top-0 left-0 h-full w-[100px] z-[100] bg-secondary-1"> */}
+        {/* page nav */}
+      <PageNav />
+      {/* </div> */}
       <div className="h-full relative w-[80vw] overflow-hidden p-0">
         <PdfLoader document="/designPDF.pdf">
           {(pdfDocument) => (

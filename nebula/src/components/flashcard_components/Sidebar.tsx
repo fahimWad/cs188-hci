@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Flashcard, { FlashcardData } from "./Flashcard";
-import CollapseButton from "./CollapseButton";
 import DeleteButton from "./DeleteButton";
 import { CustomHighlight } from "./Highlights";
 import FloatingFlashcard from "./FloatingFlashcard";
