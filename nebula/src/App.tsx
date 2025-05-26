@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 // import FlashcardPage from './pages/FlashcardPage';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import PdfDisplay from './pages/PdfDisplay.tsx';
 import Graph from './pages/Graph.tsx';
 import { CustomHighlight } from './components/flashcard_components/Highlights.tsx';
@@ -15,6 +15,9 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* For dev only; delete later once we have landing */}
+        <Route path="/" element={<Navigate to="/pdf" replace />} />
+        
         <Route path = "/pdf" element={<PdfDisplay
             highlights={highlights}
             setHighlights={setHighlights}
