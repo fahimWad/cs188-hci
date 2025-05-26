@@ -110,7 +110,6 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ highlights, setHighlights, flas
         )
       );
     }
-    // setCurFlashcard({ front: "", back: "", id: String(getNewID()) });
   };
 
   useEffect(() => {
