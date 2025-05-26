@@ -24,7 +24,9 @@ function App() {
             flashcards={flashcards}
             setFlashcards={setFlashcards} />} 
           />
-        <Route path="/graph" element={<Graph />} />
+        <Route path="/graph" element={<Graph 
+            flashCards={flashcards} />} 
+          />
         {/* <Route path="/flashcards" element={<FlashcardPage />} /> */}
       </Routes>
     </Router>
