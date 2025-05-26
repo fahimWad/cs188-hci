@@ -16,10 +16,15 @@ import PageNav from "../components/flashcard_components/PageNav";
 import { CustomHighlight } from "../components/flashcard_components/Highlights";
 import HighlighterContainer from "../components/flashcard_components/HighlighterContainer";
 
-const PdfDisplay: React.FC = () => {
-  const [highlights, setHighlights] = useState<Array<CustomHighlight>>([]); // Actual array storing highlights
+interface PdfDisplayProps {
+  highlights: Array<CustomHighlight>; // Array of highlights to be displayed
+  setHighlights: React.Dispatch<React.SetStateAction<Array<CustomHighlight>>>; // Function to update highlights
+  flashcards: Array<FlashcardData>; // Array of flashcards
+  setFlashcards: React.Dispatch<React.SetStateAction<Array<FlashcardData>>>; // Function to update flashcards
+}
+
+const PdfDisplay: React.FC<PdfDisplayProps> = ({ highlights, setHighlights, flashcards, setFlashcards }) => {
   const [front, switchSide] = useState<boolean>(true); // false = selecting back of flashcard, true = selecting front of flashcard
-  const [flashcards, setFlashcards] = useState<Array<FlashcardData>>([]); // Array storing flashcard information
   const [pendingFlashcardId, setPendingFlashcardId] = useState<number | null>(
     null
   ); // ID of flashcard being edited
