@@ -1,5 +1,7 @@
 import React, { useState, useId } from "react";
-
+//
+// Copy of Flashcard component but with specific stuff for the graph representation
+//
 export interface FlashcardData {
   id: string;
   front: string;
@@ -17,7 +19,7 @@ interface FlashcardProps {
   onFlip: () => void;
 }
 
-const Flashcard: React.FC<FlashcardProps> = ({
+const GraphFlashcard: React.FC<FlashcardProps> = ({
   card,
   selected,
   isActive,
@@ -49,10 +51,13 @@ const Flashcard: React.FC<FlashcardProps> = ({
       className={`
       relative group
       bg-secondary-2 rounded-xl shadow-md
-      h-20 flex items-center justify-center
+      max-w-[20rem]
+      flex items-center justify-center
       cursor-pointer px-8 py-12 text-center text-white
       transition
-      overflow-hidden
+      overflow-auto
+      whitespace-pre-wrap
+      break-words
       ring-4 ease-in-out duration-200 
       ${isActive ? "ring-primary-3" : "ring-transparent"}
       `}
@@ -82,4 +87,4 @@ const Flashcard: React.FC<FlashcardProps> = ({
   );
 };
 
-export default Flashcard;
+export default GraphFlashcard;
