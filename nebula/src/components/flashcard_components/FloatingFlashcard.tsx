@@ -10,6 +10,20 @@ interface FloatingFlashcardProps {
 	onConfirm: () => void;
 	onDelete: () => void;
 }
+// simple mac detection
+const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+
+// inside your key handler:
+function handleKeyDown(e: React.KeyboardEvent) {
+  const modKey = isMac ? e.metaKey : e.ctrlKey;
+  const isBold  = modKey && e.key.toLowerCase() === 'b';
+  
+  if (isBold) {
+    // do your “bold” action…
+    e.preventDefault();
+    document.execCommand("bold");
+  }
+}
 
 const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 	flashcard,
@@ -92,7 +106,7 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 
 					{flashcard.front.length > 0 ? (
 						<div
-							contentEditable={editable}
+							contentEditable={editable ? "plaintext-only" : false}
 							suppressContentEditableWarning={true}
 							onClick={() => setEditable(true)}
 							onBlur={() => setEditable(false)}
@@ -102,6 +116,7 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 									flashcard.front = newText;
 								}
 							}}
+							onKeyDown={handleKeyDown}
 						>
 							<p className="text-center p-2 text-white hover:underline hover:underline-offset-8 cursor-pointer decoration-4 decoration-primary-3">
 								{flashcard.front}
@@ -178,8 +193,9 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 									flashcard.back = newText;
 								}
 							}}
+							onKeyDown={handleKeyDown}
 						>
-							<p className="text-left text-sm font-light p-2 text-white hover:underline hover:underline-offset-8 cursor-pointer decoration-4 decoration-primary-3">
+							<p className="text-left text-sm [&_b]:font-bold font-light p-2 text-white hover:underline hover:underline-offset-8 cursor-pointer decoration-4 decoration-primary-3">
 								{flashcard.back}
 							</p>
 						</div>
