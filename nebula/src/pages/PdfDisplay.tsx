@@ -88,11 +88,31 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ highlights, setHighlights, flas
       )
     );
     setPendingFlashcardId(null);
-    setHighlights((prev) =>
-      prev.filter((h) => String(h.flashcardID) !== currentFlashcard.id)
-    );
-    setCurFlashcard({ front: "", back: "", id: String(getNewID()) });
+    
+    if (front) {
+      // Clear front text and remove only front highlights for this flashcard
+      setCurFlashcard((prev) => ({ ...prev, front: "" }));
+      setHighlights((prev) =>
+        prev.filter(
+          (h) =>
+            String(h.flashcardID) !== currentFlashcard.id ||
+            h.side !== "front"
+        )
+      );
+    } else {
+      // Clear back text and remove only back highlights for this flashcard
+      setCurFlashcard((prev) => ({ ...prev, back: "" }));
+      setHighlights((prev) =>
+        prev.filter(
+          (h) =>
+            String(h.flashcardID) !== currentFlashcard.id ||
+            h.side !== "back"
+        )
+      );
+    }
+    // setCurFlashcard({ front: "", back: "", id: String(getNewID()) });
   };
+
   useEffect(() => {
     const onHashChange = () => {
       const id = parseInt(document.location.hash.slice("#highlight-".length));
@@ -102,6 +122,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ highlights, setHighlights, flas
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, [activateHighlights]);
+
   return (
     <div className="relative w-screen h-screen">
       {/* <div className="absolute top-0 left-0 h-full w-[100px] z-[100] bg-secondary-1"> */}
