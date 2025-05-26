@@ -90,9 +90,17 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({ flashCards }: {flashCards: Arra
 
 const Graph: React.FC<GraphProps> = ({flashCards}: { flashCards: Array<FlashcardData> }) =>{
   return (
-    <ReactFlowProvider>
-        <FlowCanvas flashCards={flashCards}/>
-    </ReactFlowProvider>
+    <div>
+        <PageNav />
+        {flashCards.length > 0 ? (<ReactFlowProvider>
+            <FlowCanvas flashCards={flashCards}/>
+        </ReactFlowProvider>
+        ) : (
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-gray-500">No flashcards available. Create some!</p>
+            </div>
+        )}
+    </div>
   );
 }
 export default Graph;
