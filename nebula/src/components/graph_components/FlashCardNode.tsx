@@ -15,7 +15,7 @@ interface FlashCardNodeProps {
     selected?: boolean;
 }
 
-function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeProps) {
+export default function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeProps) {
   const [isActive, setIsActive] = useState(false);
   const [editing, setEditing] = useState(false);
   const [flipped, setFlipped] = useState(false);
@@ -34,7 +34,7 @@ function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeP
 
   return (
     <div className="text-updater-node">
-//  top left handle/connection point: a
+{/* top left handle/connection point: a */}
       <Handle
         type="target"
         position={Position.Top}
@@ -42,14 +42,14 @@ function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeP
         style={leftShift}
         isConnectable={isConnectable}
       />
-//  top middle handle/connection point: b
+{/* top middle handle/connection point: b */}
       <Handle
         type="source"
         position={Position.Top}
         id="b"
         isConnectable={isConnectable}
       />
-// top right handle/connection point: c
+{/* top right handle/connection point: c */}
       <Handle
         type="source"
         position={Position.Top}
@@ -57,7 +57,7 @@ function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeP
         style={rightShift}
         isConnectable={isConnectable}
       />
-// left handle/connection point: d
+{/* left handle/connection point: d */}
       <Handle
         type="source"
         position={Position.Left}
@@ -65,7 +65,7 @@ function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeP
         // style={handleStyle}
         isConnectable={isConnectable}
       />
-// right handle/connection point: e
+{/* right handle/connection point: e */}
       <Handle
         type="target"
         position={Position.Right}
@@ -77,7 +77,7 @@ function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeP
         <label htmlFor="text">Text:</label>
         <input id="text" name="text" onChange={onChange} className="nodrag" />
       </div> */}
-// bottom left handle/connection point: f
+{/* bottom left handle/connection point: f */}
       <Handle
         type="source"
         position={Position.Bottom}
@@ -85,14 +85,14 @@ function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeP
         style={leftShift}
         isConnectable={isConnectable}
       />
-// bottom middle connection point: g
+{/* bottom middle connection point: g */}
       <Handle
         type="source"
         position={Position.Bottom}
         id="g"
         isConnectable={isConnectable}
       />
-// bottom right connection point: h
+{/* bottom right connection point: h */}
       <Handle
         type="source"
         position={Position.Bottom}
@@ -114,5 +114,3 @@ function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeP
     </div>
   );
 }
-
-export default FlashCardNode;
