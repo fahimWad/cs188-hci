@@ -23,15 +23,22 @@ import type { FlashcardData } from "../components/flashcard_components/Flashcard
    ────────────────────────────────────────────────────────────── */
 type FlashCardNodeType = Node<{ card: FlashcardData }, "flashCard">;
 
+interface GraphProps {
+    flashCards: Array<FlashcardData>;
+}
+
+interface FlowCanvasProps {
+    flashCards: Array<FlashcardData>;
+}
 /* ──────────────────────────────────────────────────────────────
    2.  Initial flash‑cards → initial nodes
    ────────────────────────────────────────────────────────────── */
-const seedCards: FlashcardData[] = [
-  { id: "1", front: "Noun", back: "person, place, or thing" },
-  { id: "2", front: "Verb", back: "an action" },
-];
+// const seedCards: FlashcardData[] = [
+//   { id: "1", front: "Noun", back: "person, place, or thing" },
+//   { id: "2", front: "Verb", back: "an action" },
+// ];
 
-function cardsToNodes(cards: FlashcardData[]): FlashCardNodeType[] {
+function cardsToNodes(cards: Array<FlashcardData>): FlashCardNodeType[] {
   return cards.map((c, i) => ({
     id: `flashcard-${c.id ?? i}`,
     type: "flashCard",
@@ -46,8 +53,8 @@ const nodeTypes = { flashCard: FlashCardNode };
 /* ──────────────────────────────────────────────────────────────
    3.  The canvas component
    ────────────────────────────────────────────────────────────── */
-function FlowCanvas() {
-  const [nodes, setNodes] = useState<FlashCardNodeType[]>(cardsToNodes(seedCards));
+const FlowCanvas: React.FC<FlowCanvasProps> = ({ flashCards }: {flashCards: Array<FlashcardData>}) => {
+  const [nodes, setNodes] = useState<FlashCardNodeType[]>(cardsToNodes(flashCards));
   const [edges, setEdges] = useState<Edge[]>([]);
 
   const onNodesChange: OnNodesChange = useCallback(
@@ -81,10 +88,10 @@ function FlowCanvas() {
   );
 }
 
-function Graph(){
+const Graph: React.FC<GraphProps> = ({flashCards}: { flashCards: Array<FlashcardData> }) =>{
   return (
     <ReactFlowProvider>
-        <FlowCanvas />
+        <FlowCanvas flashCards={flashCards}/>
     </ReactFlowProvider>
   );
 }

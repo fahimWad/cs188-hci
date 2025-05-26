@@ -51,7 +51,7 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
       />
 {/* top right handle/connection point: c */}
       <Handle
-        type="source"
+        type="target"
         position={Position.Top}
         id="c"
         style={rightShift}
@@ -67,7 +67,7 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
       />
 {/* right handle/connection point: e */}
       <Handle
-        type="target"
+        type="source"
         position={Position.Right}
         id="e"
         // style={handleStyle}
@@ -79,7 +79,7 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
       </div> */}
 {/* bottom left handle/connection point: f */}
       <Handle
-        type="source"
+        type="target"
         position={Position.Bottom}
         id="f"
         style={leftShift}
@@ -94,7 +94,7 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
       />
 {/* bottom right connection point: h */}
       <Handle
-        type="source"
+        type="target"
         position={Position.Bottom}
         id="h"
         style={rightShift}
