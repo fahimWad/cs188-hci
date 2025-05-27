@@ -7,6 +7,7 @@ import PdfDisplay from './pages/PdfDisplay.tsx';
 import Graph from './pages/Graph.tsx';
 import { CustomHighlight } from './components/flashcard_components/Highlights.tsx';
 import { FlashcardData } from './components/flashcard_components/Flashcard.tsx';
+import LandingPage from './pages/LandingPage.tsx';
 
 function App() {
   const [highlights, setHighlights] = useState<Array<CustomHighlight>>([]); // Actual array storing highlights
@@ -16,7 +17,7 @@ function App() {
     <Router>
       <Routes>
         {/* For dev only; delete later once we have landing */}
-        <Route path="/" element={<Navigate to="/pdf" replace />} />
+        <Route path="/" element={<LandingPage />} />
         
         <Route path = "/pdf" element={<PdfDisplay
             highlights={highlights}
