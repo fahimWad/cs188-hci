@@ -64,7 +64,7 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 				<div
 					className="
 					absolute inset-0 flex items-center justify-center
-					bg-secondary-2 border border-primary-3 rounded-xl shadow
+					bg-neutral-2 border border-primary-3 rounded-xl shadow
 					text-xl font-bold
 					[transform:rotateX(0deg)] [-webkit-transform:rotateX(0deg)]
 					[backface-visibility:hidden] [-webkit-backface-visibility:hidden]
@@ -136,7 +136,7 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 				<div
 					className="
 					absolute inset-0 flex items-center justify-center
-					bg-secondary-2 border border-primary-3 rounded-xl shadow
+					bg-neutral-2 border border-primary-3 rounded-xl shadow
 					text-xl font-bold
 					[transform:rotateX(180deg)] [-webkit-transform:rotateX(180deg)]
 					[backface-visibility:hidden] [-webkit-backface-visibility:hidden]

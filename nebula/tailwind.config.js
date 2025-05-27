@@ -15,7 +15,7 @@ module.exports = {
           '1-10': 'rgba(96, 97, 191, 0.1)',   // "Primary/01", 10% opacity
           '1-5': 'rgba(96, 97, 191, 0.05)',   // "Primary/01", 5% opacity
         }, 
-        secondary: {
+        neutral: {
           1: '#262629',
           2: '#323236',
           3: '#5B5B61',

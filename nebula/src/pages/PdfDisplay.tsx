@@ -124,7 +124,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ highlights, setHighlights, flas
 
   return (
     <div className="relative w-screen h-screen">
-      {/* <div className="absolute top-0 left-0 h-full w-[100px] z-[100] bg-secondary-1"> */}
+      {/* <div className="absolute top-0 left-0 h-full w-[100px] z-[100] bg-neutral-1"> */}
         {/* page nav */}
       <PageNav />
       {/* </div> */}
