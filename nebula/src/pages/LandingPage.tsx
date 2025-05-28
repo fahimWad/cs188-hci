@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+import AddStudySetButton from "../components/landing_components/AddStudySetButton";
+import UploadNotesModal from "../modals/UploadNotesModal";
 import { IoMdAddCircle, IoMdSearch } from "react-icons/io";
 import { MdOutlineSearch, MdOutlineSort } from "react-icons/md";
 
 const LandingPage = () => {
+    const [showUploadNotesModal, setShowUploadNotesModal] = useState(false);
+
+    // Function to handle the click event for adding a study set
+    const handleAddStudySet = () => {
+        setShowUploadNotesModal(true);
+    };
+
+    // Function to close the upload notes modal
+    const handleCloseUploadNotesModal = () => {
+        setShowUploadNotesModal(false);
+    };
+
 
     const [createHover, setCreateHover] = React.useState(false);
     const [tutorialHover, setTutorialHover] = React.useState(false);

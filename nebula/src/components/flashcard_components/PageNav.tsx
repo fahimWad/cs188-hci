@@ -9,7 +9,7 @@ const PageNav: React.FC = () => {
     const location = useLocation();
 
     return (
-        <div className="absolute top-0 left-0 h-full w-[90px] z-[100] bg-secondary-1 flex flex-col justify-center items-center gap-4 p-4 bg-secondary-1">
+        <div className="absolute top-0 left-0 h-full w-[90px] z-[100] bg-neutral-1 flex flex-col justify-center items-center gap-4 p-4 bg-neutral-1">
             <button
                 onClick={() => navigate("/pdf")}
                 className={`p-4 rounded-lg ${location.pathname === "/pdf" ? "bg-primary-1 text-white" : "bg-gray-200 text-secondary-1"}`}
