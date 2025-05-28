@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { MdOutlineClose } from "react-icons/md";
 
 interface UploadNotesModalProps {
 	isOpen: boolean;
@@ -39,7 +40,16 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 	return (
 		<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
 			<div className="bg-secondary-2 rounded-lg p-6 shadow-lg">
-				<h2 className="text-xl font-semibold mb-4">New Study Set</h2>
+
+				<div className="flex flex-row justify-between">
+					<h2 className="text-xl font-semibold mb-4 ">New Study Set</h2>
+					<MdOutlineClose
+						className={`hover:fill-white-50 hover:cursor-pointer fill-white`}
+						size={24}
+						onClick={onClose} />
+				</div>
+
+
 				<div className="flex gap-6">
 					<div className="mb-4">
 						<input

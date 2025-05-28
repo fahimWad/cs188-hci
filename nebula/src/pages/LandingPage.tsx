@@ -17,28 +17,6 @@ const LandingPage = () => {
         setShowUploadNotesModal(false);
     };
 
-
-    const [createHover, setCreateHover] = React.useState(false);
-    const [tutorialHover, setTutorialHover] = React.useState(false);
-    const [searchHover, setSearchHover] = React.useState(false);
-    const [sortHover, setSortHover] = React.useState(false)
-
-    const handleCreateHover = () => {
-      setCreateHover(!createHover);
-    }
-
-    const handleTutorialHover = () => {
-      setTutorialHover(!tutorialHover);
-    }
-
-    const handleSearchHover = () => {
-      setSearchHover(!searchHover);
-    }
-
-    const handleSortHover = () => {
-      setSortHover(!sortHover)
-    }
-
     return(
         <div className="w-screen h-screen text-white bg-secondary-1 flex flex-col p-8 overflow-y-hidden">
             {/* TODO: Add nebula brand logo above */}
@@ -51,22 +29,19 @@ const LandingPage = () => {
 
               <div className="flex flex-row">
                 <MdOutlineSearch size={24} 
-                  className={`${searchHover ? "fill-white-50 cursor-pointer" : "fill-white"}`}
-                  onMouseEnter={handleSearchHover}
-                  onMouseLeave={handleSearchHover}/>
+                  className={`hover:fill-white-50 hover:cursor-pointer fill-white`}/>
                 <MdOutlineSort size={24} 
-                  className={`${sortHover ? "fill-white-50 cursor-pointer" : "fill-white"} ml-2`}
-                  onMouseEnter={handleSortHover}
-                  onMouseLeave={handleSortHover}/>
+                  className={`hover:fill-white-50 hover:cursor-pointer fill-white ml-2`}/>
               </div>
             </div>
 
+            <UploadNotesModal onClose={handleCloseUploadNotesModal} isOpen={showUploadNotesModal} />
+
             <div className="flex flex-row justify-between py-8 space-x-8">
-                <div className={`w-full rounded-xl p-6 flex flex-row items-center ${createHover ? "bg-primary-1-5 cursor-pointer" : "bg-primary-1-10"}`}
-                  onMouseEnter={handleCreateHover}
-                  onMouseLeave={handleCreateHover}>
+                <div className={`w-full rounded-xl p-6 flex flex-row items-center hover:bg-primary-1-5 hover:cursor-pointer bg-primary-1-10`}>
                     {/* TODO: Click to display modal */}
-                    <div className="w-full h-full flex flex-col justify-center items-center">
+                    <div className="w-full h-full flex flex-col justify-center items-center"
+                    onClick={handleAddStudySet}>
                         <IoMdAddCircle
                           className="fill-primary-1"
                           size={48}/>
@@ -74,10 +49,7 @@ const LandingPage = () => {
                     </div>
                 </div>
 
-                <div className={`w-full bg-secondary-2 ${tutorialHover ? "bg-secondary-2-85 cursor-pointer" : "bg-secondary-2"} rounded-xl p-6`}
-                  onMouseEnter={handleTutorialHover}
-                  onMouseLeave={handleTutorialHover}
-                >
+                <div className={`w-full bg-secondary-2 hover:bg-secondary-2-85 hover:cursor-pointer bg-secondary-2 rounded-xl p-6`}>
                     {/* Will eventually be a thumbnail */}
                     <div className="w-full h-40 bg-secondary-1" />
                     
