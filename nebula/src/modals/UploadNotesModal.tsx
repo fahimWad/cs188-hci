@@ -75,13 +75,11 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 					<div
 						className={`border-2 ${
 							dragActive ? "border-primary-1" : "border-gray-700"
-						} border-dashed rounded-lg bg-neutral-2 hover:bg-neutral-1-85 flex flex-col items-center justify-center py-10 mb-4 w-2/5  transition-colors`}
+						} border-dashed rounded-lg bg-neutral-2 flex flex-col items-center justify-center py-10 mb-4 w-2/5  transition-colors`}
 						onDragEnter={handleDrag}
 						onDragOver={handleDrag}
 						onDragLeave={handleDrag}
 						onDrop={handleDrop}
-						onClick={() => inputRef.current?.click()}
-						style={{ cursor: "pointer" }}
 					>
 						<p className="text-white text-center font-medium mb-1">
 							Upload your study material
@@ -93,7 +91,8 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 						</p>
 						<button
 							type="button"
-							className="bg-primary-1-10 text-primary-3 px-6 py-2 rounded-lg font-medium"
+							className="bg-primary-1-10 hover:bg-primary-1-5 text-primary-3 px-6 py-2 rounded-lg font-medium"
+							onClick={() => inputRef.current?.click()}
 						>
 							Choose File
 						</button>
