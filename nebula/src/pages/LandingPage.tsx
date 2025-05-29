@@ -18,9 +18,8 @@ const LandingPage = () => {
     };
 
     return(
-        <div className="w-screen h-screen text-white bg-secondary-1 flex flex-col p-8 overflow-y-hidden">
+        <div className="w-screen h-screen text-white bg-neutral-1 flex flex-col p-8 overflow-y-hidden">
             {/* TODO: Add nebula brand logo above */}
-
 
             <div className="flex flex-row justify-between">
               <p className={`text-xl font-semibold`}>
@@ -49,9 +48,9 @@ const LandingPage = () => {
                     </div>
                 </div>
 
-                <div className={`w-full bg-secondary-2 hover:bg-secondary-2-85 hover:cursor-pointer bg-secondary-2 rounded-xl p-6`}>
+                <div className={`w-full bg-neutral-2 hover:bg-neutral-2-85 hover:cursor-pointer bg-neutral-2 rounded-xl p-6`}>
                     {/* Will eventually be a thumbnail */}
-                    <div className="w-full h-40 bg-secondary-1" />
+                    <div className="w-full h-40 bg-neutral-1" />
                     
                     {/* TODO: Click to play tutorial video */}
                     <div className="mt-6 text-white">
