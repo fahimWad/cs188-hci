@@ -68,7 +68,7 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 						/>
 						<textarea
 							placeholder="Description"
-							className="bg-neutral-1 rounded-xl px-4 pt-2 pb-20 w-full h-full"
+							className="bg-neutral-1 rounded-xl px-4 pt-2 pb-20 w-full h-full resize-none overflow-auto text-white"
 							rows={4}
 						></textarea>
 					</div>
