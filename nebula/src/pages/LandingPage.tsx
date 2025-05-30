@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import AddStudySetButton from "../components/landing_components/AddStudySetButton";
-import UploadNotesModal from "../modals/UploadNotesModal";
+import UploadNotesModal from "../components/landing_components/UploadNotesModal";
 import { IoMdAddCircle, IoMdSearch } from "react-icons/io";
 import { MdOutlineSearch, MdOutlineSort } from "react-icons/md";
 
-const LandingPage = () => {
+const LandingPage: React.FC = () => {
     const [showUploadNotesModal, setShowUploadNotesModal] = useState(false);
 
     // Function to handle the click event for adding a study set
