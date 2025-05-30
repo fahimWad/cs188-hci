@@ -26,12 +26,12 @@ const LandingPage = () => {
                 Study Sets
               </p>
 
-              <div className="flex flex-row">
+              {/* <div className="flex flex-row">
                 <MdOutlineSearch size={24} 
                   className={`hover:fill-white-50 hover:cursor-pointer fill-white`}/>
                 <MdOutlineSort size={24} 
                   className={`hover:fill-white-50 hover:cursor-pointer fill-white ml-2`}/>
-              </div>
+              </div> */}
             </div>
 
             <UploadNotesModal onClose={handleCloseUploadNotesModal} isOpen={showUploadNotesModal} />
