@@ -15,15 +15,19 @@ import Sidebar from "../components/flashcard_components/Sidebar";
 import PageNav from "../components/flashcard_components/PageNav";
 import { CustomHighlight } from "../components/flashcard_components/Highlights";
 import HighlighterContainer from "../components/flashcard_components/HighlighterContainer";
+import { useAppContext } from "../context/AppContext";
 
-interface PdfDisplayProps {
-  highlights: Array<CustomHighlight>; // Array of highlights to be displayed
-  setHighlights: React.Dispatch<React.SetStateAction<Array<CustomHighlight>>>; // Function to update highlights
-  flashcards: Array<FlashcardData>; // Array of flashcards
-  setFlashcards: React.Dispatch<React.SetStateAction<Array<FlashcardData>>>; // Function to update flashcards
-}
+const PdfDisplay: React.FC = () => {
+  const { flashcards, setFlashcards, highlights, setHighlights, uploadedFile } = useAppContext(); // Get flashcards and highlights from context
 
-const PdfDisplay: React.FC<PdfDisplayProps> = ({ highlights, setHighlights, flashcards, setFlashcards }) => {
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null); // State to hold the PDF URL
+  useEffect(() => {
+    if (uploadedFile) {
+      const fileUrl = URL.createObjectURL(uploadedFile);
+      setPdfUrl(fileUrl); // Set the PDF URL when the component mounts or when uploadedFile changes
+    }
+  }, [uploadedFile]);
+
   const [front, switchSide] = useState<boolean>(true); // false = selecting back of flashcard, true = selecting front of flashcard
   const [pendingFlashcardId, setPendingFlashcardId] = useState<number | null>(
     null
@@ -129,59 +133,61 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ highlights, setHighlights, flas
       <PageNav />
       {/* </div> */}
       <div className="h-full relative w-[80vw] overflow-hidden p-0">
-        <PdfLoader document="/designPDF.pdf">
-          {(pdfDocument) => (
-            <div className="absolute inset-0">
-              <PdfHighlighter
-                pdfDocument={pdfDocument}
-                utilsRef={(_pdfHighlighterUtils) => {
-                  highlighterUtilsRef.current = _pdfHighlighterUtils;
-                }}
-                enableAreaSelection={(mouseEvent: MouseEvent) =>
-                  mouseEvent.altKey
-                }
-                onSelection={(selection: PdfSelection) => {
-                  if (front) {
-                    const newId = pendingFlashcardId ?? getNewID();
-                    setPendingFlashcardId(newId);
-                    const nextFlashcard = {
-                      id: String(newId),
-                      front: [
-                        currentFlashcard.front ?? "",
-                        (currentFlashcard.front ?? "").trimEnd().length
-                          ? " "
-                          : "",
-                        selection.content.text ?? selection.content.image ?? "",
-                      ].join(""), // Add to current back of flashcard (appending space if no space)
-                      back: currentFlashcard.back ?? "",
-                    };
-                    setCurFlashcard(nextFlashcard);
-                    //switchSide((side) => !side);
-                  } else if (!front) {
-                    const completeFlashcard = {
-                      id: String(pendingFlashcardId ?? getID()),
-                      front: currentFlashcard.front ?? "",
-                      back: [
-                        currentFlashcard.back ?? "",
-                        (currentFlashcard.back ?? "").trimEnd().length
-                          ? " "
-                          : "",
-                        selection.content.text ?? selection.content.image ?? "",
-                      ].join(""), // Add to current back of flashcard (appending space if no space)
-                    };
-                    setCurFlashcard(completeFlashcard);
-                    //switchSide((side) => !side);
-                    // console.log(flashcards);
+        {pdfUrl && (
+          <PdfLoader document={pdfUrl}>
+            {(pdfDocument) => (
+              <div className="absolute inset-0">
+                <PdfHighlighter
+                  pdfDocument={pdfDocument}
+                  utilsRef={(_pdfHighlighterUtils) => {
+                    highlighterUtilsRef.current = _pdfHighlighterUtils;
+                  }}
+                  enableAreaSelection={(mouseEvent: MouseEvent) =>
+                    mouseEvent.altKey
                   }
-                  addHighlight(selection.makeGhostHighlight());
-                }}
-                highlights={highlights}
-              >
-                <HighlighterContainer></HighlighterContainer>
-              </PdfHighlighter>
-            </div>
-          )}
-        </PdfLoader>
+                  onSelection={(selection: PdfSelection) => {
+                    if (front) {
+                      const newId = pendingFlashcardId ?? getNewID();
+                      setPendingFlashcardId(newId);
+                      const nextFlashcard = {
+                        id: String(newId),
+                        front: [
+                          currentFlashcard.front ?? "",
+                          (currentFlashcard.front ?? "").trimEnd().length
+                            ? " "
+                            : "",
+                          selection.content.text ?? selection.content.image ?? "",
+                        ].join(""), // Add to current back of flashcard (appending space if no space)
+                        back: currentFlashcard.back ?? "",
+                      };
+                      setCurFlashcard(nextFlashcard);
+                      //switchSide((side) => !side);
+                    } else if (!front) {
+                      const completeFlashcard = {
+                        id: String(pendingFlashcardId ?? getID()),
+                        front: currentFlashcard.front ?? "",
+                        back: [
+                          currentFlashcard.back ?? "",
+                          (currentFlashcard.back ?? "").trimEnd().length
+                            ? " "
+                            : "",
+                          selection.content.text ?? selection.content.image ?? "",
+                        ].join(""), // Add to current back of flashcard (appending space if no space)
+                      };
+                      setCurFlashcard(completeFlashcard);
+                      //switchSide((side) => !side);
+                      // console.log(flashcards);
+                    }
+                    addHighlight(selection.makeGhostHighlight());
+                  }}
+                  highlights={highlights}
+                >
+                  <HighlighterContainer></HighlighterContainer>
+                </PdfHighlighter>
+              </div>
+            )}
+          </PdfLoader>
+        )}
       </div>
       <div className="fixed top-0 right-0 h-full w-[400px] z-[200]">
         <Sidebar

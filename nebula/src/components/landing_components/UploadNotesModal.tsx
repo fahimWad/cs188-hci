@@ -1,5 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
 
 interface UploadNotesModalProps {
 	isOpen: boolean;
@@ -9,11 +11,29 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 	isOpen,
 	onClose,
 }) => {
+	const { uploadedFile, setUploadedFile } = useAppContext();
+	const navigate = useNavigate();
+
 	const [dragActive, setDragActive] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [hasFile, setHasFile] = useState(false);
 
+	useEffect(() => {
+        setHasFile(!!uploadedFile);
+    }, [uploadedFile]);
+
 	if (!isOpen) return null;
+
+	const handleCreateStudySet = () => {
+		if (hasFile && uploadedFile) {
+			navigate("/pdf", {
+				state: {
+					uploadedFile: uploadedFile,
+				},
+			});
+			onClose();
+		}
+	}
 
 	const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault();
@@ -29,6 +49,9 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 		setDragActive(false);
 		if (e.dataTransfer.files && e.dataTransfer.files[0]) {
 			// Handle file upload logic here
+			if (setUploadedFile) {
+				setUploadedFile(e.dataTransfer.files[0]);
+			}
 			setHasFile(true)
 			console.log(e.dataTransfer.files);
 		}
@@ -36,6 +59,9 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		// Handle file upload logic here
+		if (setUploadedFile) {
+			setUploadedFile(e.target.files ? e.target.files[0] : null);
+		}
 		setHasFile(true)
 		console.log(e.target.files);
 	};
@@ -68,7 +94,7 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 						/>
 						<textarea
 							placeholder="Description"
-							className="bg-neutral-1 rounded-xl px-4 pt-2 pb-20 w-full h-full"
+							className="bg-neutral-1 rounded-xl px-4 pt-2 pb-20 w-full h-full resize-none overflow-auto text-white"
 							rows={4}
 						></textarea>
 					</div>
@@ -111,7 +137,7 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 						type="button"
 						className={`text-white px-6 py-2 rounded-xl font-medium 
 							${!hasFile ? "pointer-events-none text-white-50 bg-neutral-3" : "text-white bg-primary-1 hover:bg-primary-1-85"}`}
-						onClick={handleClose}
+						onClick={handleCreateStudySet}
 					>
 						Create Study Set
 					</button>
