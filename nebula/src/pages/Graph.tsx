@@ -18,6 +18,7 @@ import "@xyflow/react/dist/style.css";
 import FlashCardNode from "../components/graph_components/FlashCardNode";
 import type { FlashcardData } from "../components/flashcard_components/Flashcard";
 import { useAppContext } from "../context/AppContext";
+import AddNodeButton from "../components/graph_components/AddNodeButton";
 
 // Define a typed node for our flash‑cards
 type FlashCardNodeType = Node<{ card: FlashcardData }, "flashCard">;
@@ -58,7 +59,13 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 	// Update nodes when flashCards change
 	useEffect(() => {
 		if (flashCards.length > 0) {
-			setNodes(cardsToNodes(flashCards));
+			const flashcardNodes = cardsToNodes(flashCards);
+			setNodes((prevNodes) => [
+				...prevNodes.filter(
+					(node) => !node.id.startsWith("flashcard-")
+				),
+				...flashcardNodes,
+			]);
 		}
 	}, [flashCards, setNodes]);
 
@@ -71,17 +78,17 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 						nds as Node[]
 					) as FlashCardNodeType[]
 			),
-		[]
+		[setNodes]
 	);
 
 	const onEdgesChange: OnEdgesChange = useCallback(
 		(changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-		[]
+		[setEdges]
 	);
 
 	const onConnect: OnConnect = useCallback(
 		(connection) => setEdges((eds) => addEdge(connection, eds)),
-		[]
+		[setEdges]
 	);
 
 	return (
@@ -101,7 +108,31 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 };
 
 const Graph: React.FC = () => {
-	const { flashcards: flashCards } = useAppContext(); // Get flashcards from context
+	const { flashcards: flashCards, setNodes } = useAppContext(); // Get flashcards from context
+
+	const addGraphNode = useCallback(() => {
+		// Generate a random position for the new node
+		const position = {
+			x: Math.random() * 400 + 100,
+			y: Math.random() * 300 + 200,
+		};
+
+		const newGraphNode: FlashCardNodeType = {
+			id: `graphnode-${Date.now()}`,
+			type: "flashCard",
+			position,
+			data: {
+				card: {
+					id: `graph-${Date.now()}`,
+					front: "New Concept",
+					back: "Add description...",
+				},
+			},
+		};
+
+		setNodes((prevNodes) => [...prevNodes, newGraphNode]);
+	}, [setNodes]);
+
 	return (
 		<div>
 			<PageNav />
@@ -116,6 +147,7 @@ const Graph: React.FC = () => {
 					</p>
 				</div>
 			)}
+			<AddNodeButton onClick={addGraphNode} />
 		</div>
 	);
 };
