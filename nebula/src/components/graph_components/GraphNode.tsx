@@ -1,8 +1,12 @@
 import React, { useState, useId } from "react";
-import { FlashcardData } from "../flashcard_components/Flashcard";
 //
 // Copy of Flashcard component but with specific stuff for the graph representation
 //
+export interface FlashcardData {
+	id: string;
+	front: string;
+	back: string;
+}
 
 interface FlashcardProps {
 	card: FlashcardData;
@@ -35,11 +39,10 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
 		if (!editing) onSelect();
 	};
 
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!editing) onFlip();
-    document.location.hash = `flashcard-${card.id}`;
-  };
+	const handleDoubleClick = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		if (!editing) onFlip();
+	};
 
 	return (
 		<div
