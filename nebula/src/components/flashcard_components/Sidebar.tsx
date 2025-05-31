@@ -43,7 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 		(document.location.hash = `flashcard-${flashcardID}`),
 	];
 	return (
-		<div className="bg-secondary-1 w-[400px] h-screen p-8 flex flex-col gap-4">
+		<div className="bg-neutral-1 w-[400px] h-screen p-8 flex flex-col gap-4">
 			{/* --- search input -------------------------------------------------- */}
 			<input
 				type="text"

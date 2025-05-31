@@ -48,7 +48,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
       onDoubleClick={handleDoubleClick}
       className={`
       relative group
-      bg-secondary-2 rounded-xl shadow-md
+      bg-neutral-2 rounded-xl shadow-md
       h-20 flex items-center justify-center
       cursor-pointer px-8 py-12 text-center text-white
       transition

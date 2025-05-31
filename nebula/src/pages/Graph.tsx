@@ -17,15 +17,12 @@ import "@xyflow/react/dist/style.css";
 
 import FlashCardNode from "../components/graph_components/FlashCardNode";
 import type { FlashcardData } from "../components/flashcard_components/Flashcard";
+import { useAppContext } from "../context/AppContext";
 
 /* ──────────────────────────────────────────────────────────────
    1.  Define a typed node for our flash‑cards
    ────────────────────────────────────────────────────────────── */
 type FlashCardNodeType = Node<{ card: FlashcardData }, "flashCard">;
-
-interface GraphProps {
-    flashCards: Array<FlashcardData>;
-}
 
 interface FlowCanvasProps {
     flashCards: Array<FlashcardData>;
@@ -88,7 +85,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({ flashCards }: {flashCards: Arra
   );
 }
 
-const Graph: React.FC<GraphProps> = ({flashCards}: { flashCards: Array<FlashcardData> }) =>{
+const Graph: React.FC = () =>{
+  const { flashcards: flashCards } = useAppContext(); // Get flashcards from context
   return (
     <div>
         <PageNav />
