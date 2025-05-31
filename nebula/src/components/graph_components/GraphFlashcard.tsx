@@ -5,47 +5,52 @@ import { FlashcardData } from "../flashcard_components/Flashcard";
 //
 
 interface FlashcardProps {
-	card: FlashcardData;
-	isActive: boolean;
-	selected: boolean;
-	editing: boolean;
-	flipped: boolean;
-	onSelect: () => void;
-	onEdit: (id: string | number | null) => void;
-	onFlip: () => void;
+  card: FlashcardData;
+  isActive: boolean;
+  selected: boolean;
+  editing: boolean;
+  flipped: boolean;
+  onSelect: () => void;
+  onEdit: (id: string | number | null) => void;
+  onFlip: () => void;
 }
 
 const GraphFlashcard: React.FC<FlashcardProps> = ({
-	card,
-	selected,
-	isActive,
-	editing,
-	flipped,
-	onSelect,
-	onFlip,
+  card,
+  selected,
+  isActive,
+  editing,
+  flipped,
+  onSelect,
+  onFlip,
 }) => {
-	const autoId = useId();
-	const id = card.id ?? autoId;
+  const autoId = useId();
+  const id = card.id ?? autoId;
 
-	const [frontText, setFrontText] = useState(card.front);
-	const [backText, setBackText] = useState(card.back);
+  const [frontText, setFrontText] = useState(card.front);
+  const [backText, setBackText] = useState(card.back);
 
-	const handleClick = (e: React.MouseEvent) => {
-		e.stopPropagation();
-		if (!editing) onSelect();
-	};
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!editing) onSelect();
+  };
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!editing) onFlip();
-    document.location.hash = `flashcard-${card.id}`;
+    let cardID = card.id;
+
+    cardID = cardID.replace("graph-", "");
+    console.log("SDKLFSDKLJF");
+    console.log(card);
+    document.location.hash = `flashcard-${cardID}`;
   };
 
-	return (
-		<div
-			onClick={handleClick}
-			onDoubleClick={handleDoubleClick}
-			className={`
+  return (
+    <div
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
+      className={`
       relative group
       bg-neutral-2 rounded-xl shadow-md
       max-w-[20rem]
@@ -58,18 +63,18 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
       ring-4 ease-in-out duration-200 
       ${isActive ? "ring-primary-3" : "ring-transparent"}
       `}
-		>
-			<span
-				className={`
+    >
+      <span
+        className={`
         text-lg
         ${selected ? "font-bold" : "font-light"}
       `}
-				style={{ maxWidth: "100%" }}
-			>
-				{flipped ? backText : frontText}
-			</span>
-		</div>
-	);
+        style={{ maxWidth: "100%" }}
+      >
+        {flipped ? backText : frontText}
+      </span>
+    </div>
+  );
 };
 
 export default GraphFlashcard;
