@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
+import DeleteButton from "../flashcard_components/DeleteButton";
+import { IoMdTrash } from "react-icons/io";
 
 interface UploadNotesModalProps {
 	isOpen: boolean;
@@ -17,6 +19,7 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 	const [dragActive, setDragActive] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [hasFile, setHasFile] = useState(false);
+	const [studySetName, setStudySetName] = useState("");
 
 	useEffect(() => {
         setHasFile(!!uploadedFile);
@@ -86,57 +89,83 @@ const UploadNotesModal: React.FC<UploadNotesModalProps> = ({
 				</div>
 
 				<div className="w-full h-full flex flex-row justify-between mt-4 gap-6">
-					<div className="w-3/5 h-full mb-4">
+					<div className="w-90 h-full mb-4">
 						<input
 							type="text"
 							placeholder="Study Set Name"
 							className="bg-neutral-1 rounded-lg px-4 py-2 mb-4 w-full h-full "
+							onChange={(e) => setStudySetName(e.target.value)}
 						/>
+
 						<textarea
 							placeholder="Description"
 							className="bg-neutral-1 rounded-xl px-4 pt-2 pb-20 w-full h-full resize-none overflow-auto text-white"
 							rows={4}
 						></textarea>
 					</div>
-					<div
-						className={`border-2 ${
-							dragActive ? "border-primary-1" : "border-gray-700"
-						} border-dashed rounded-lg bg-neutral-2 flex flex-col items-center justify-center py-10 mb-4 w-2/5  transition-colors`}
-						onDragEnter={handleDrag}
-						onDragOver={handleDrag}
-						onDragLeave={handleDrag}
-						onDrop={handleDrop}
-					>
-						<p className="text-white text-center font-medium mb-1">
-							Upload your study material
-						</p>
-						<p className="text-gray-400 text-center text-sm mb-4">
-							Drag and drop it here
-							<br />
-							or
-						</p>
-						<button
-							type="button"
-							className="bg-primary-1-10 hover:bg-primary-1-5 text-primary-3 px-6 py-2 rounded-lg font-medium"
-							onClick={() => inputRef.current?.click()}
+					
+					{ !hasFile && 
+						<div
+							className={`border-2 ${
+								dragActive ? "border-primary-1" : "border-gray-700"
+							} border-dashed rounded-lg bg-neutral-2 flex flex-col items-center justify-center py-10 mb-4 w-60  transition-colors`}
+							onDragEnter={handleDrag}
+							onDragOver={handleDrag}
+							onDragLeave={handleDrag}
+							onDrop={handleDrop}
 						>
-							Choose File
-						</button>
-						<input
-							ref={inputRef}
-							type="file"
-							accept=".pdf"
-							className="hidden"
-							onChange={handleChange}
-						/>
-					</div>
+							<p className="text-white text-center font-medium mb-1">
+								Upload your study material
+							</p>
+							<p className="text-gray-400 text-center text-sm mb-4">
+								Drag and drop it here
+								<br />
+								or
+							</p>
+							<button
+								type="button"
+								className="bg-primary-1-10 hover:bg-primary-1-5 text-primary-3 px-6 py-2 rounded-lg font-medium"
+								onClick={() => inputRef.current?.click()}
+							>
+								Choose File
+							</button>
+							<input
+								ref={inputRef}
+								type="file"
+								accept=".pdf"
+								className="hidden"
+								onChange={handleChange}
+							/>
+						</div>
+					}
+
+					{hasFile && (
+						<div className="w-60 flex self-start">
+							<div className="bg-white-6 rounded-lg px-4 py-2 w-full flex items-center justify-between">
+								{/* File Name*/}
+								<span className="text-white truncate">
+									{uploadedFile!.name}
+								</span>
+
+								<IoMdTrash
+									className="fill-red-500 size-4 hover:fill-red-400 hover:cursor-pointer flex-shrink-0"
+									onClick={() => {
+										setUploadedFile(null);
+										setHasFile(false);
+									}}>
+
+								</IoMdTrash>
+							</div>
+						</div>
+					)}
+
 				</div>
 
 				<div className="w-full flex flex-row justify-end mt-4">
 					<button
 						type="button"
 						className={`text-white px-6 py-2 rounded-xl font-medium 
-							${!hasFile ? "pointer-events-none text-white-50 bg-neutral-3" : "text-white bg-primary-1 hover:bg-primary-1-85"}`}
+							${(hasFile && studySetName !== "")  ? "text-white bg-primary-1 hover:bg-primary-1-85" : "pointer-events-none text-white-50 bg-neutral-3"}`}
 						onClick={handleCreateStudySet}
 					>
 						Create Study Set
