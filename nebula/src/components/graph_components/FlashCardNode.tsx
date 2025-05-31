@@ -1,21 +1,26 @@
 import { useState, useCallback } from "react";
 import { Handle, Position } from "@xyflow/react";
-import Flashcard, {FlashcardData} from "../flashcard_components/Flashcard";
+import GraphFlashcard from "./GraphFlashcard";
+import { FlashcardData } from "../flashcard_components/Flashcard";
 
 const leftShift = { left: 1 };
 const rightShift = { right: 0, left: 188 };
 
 interface FlashCardNodeData {
-    card: FlashcardData;
+  card: FlashcardData;
 }
 
 interface FlashCardNodeProps {
-    data: FlashCardNodeData;
-    isConnectable: boolean;
-    selected?: boolean;
+  data: FlashCardNodeData;
+  isConnectable: boolean;
+  selected?: boolean;
 }
 
-export default function FlashCardNode({ data, isConnectable, selected = false }: FlashCardNodeProps) {
+export default function FlashCardNode({
+  data,
+  isConnectable,
+  selected = false,
+}: FlashCardNodeProps) {
   const [isActive, setIsActive] = useState(false);
   const [editing, setEditing] = useState(false);
   const [flipped, setFlipped] = useState(false);
@@ -24,9 +29,12 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
     setIsActive(!isActive);
   }, [isActive]);
 
-  const handleEdit = useCallback((id: string | number | null) => {
-    setEditing(!editing);
-  }, [editing]);
+  const handleEdit = useCallback(
+    (id: string | number | null) => {
+      setEditing(!editing);
+    },
+    [editing]
+  );
 
   const handleFlip = useCallback(() => {
     setFlipped(!flipped);
@@ -34,7 +42,7 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
 
   return (
     <div className="text-updater-node">
-{/* top left handle/connection point: a */}
+      {/* top left handle/connection point: a */}
       <Handle
         type="target"
         position={Position.Top}
@@ -42,14 +50,14 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
         style={leftShift}
         isConnectable={isConnectable}
       />
-{/* top middle handle/connection point: b */}
+      {/* top middle handle/connection point: b */}
       <Handle
         type="source"
         position={Position.Top}
         id="b"
         isConnectable={isConnectable}
       />
-{/* top right handle/connection point: c */}
+      {/* top right handle/connection point: c */}
       <Handle
         type="target"
         position={Position.Top}
@@ -57,7 +65,7 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
         style={rightShift}
         isConnectable={isConnectable}
       />
-{/* left handle/connection point: d */}
+      {/* left handle/connection point: d */}
       <Handle
         type="source"
         position={Position.Left}
@@ -65,7 +73,7 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
         // style={handleStyle}
         isConnectable={isConnectable}
       />
-{/* right handle/connection point: e */}
+      {/* right handle/connection point: e */}
       <Handle
         type="source"
         position={Position.Right}
@@ -77,7 +85,7 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
         <label htmlFor="text">Text:</label>
         <input id="text" name="text" onChange={onChange} className="nodrag" />
       </div> */}
-{/* bottom left handle/connection point: f */}
+      {/* bottom left handle/connection point: f */}
       <Handle
         type="target"
         position={Position.Bottom}
@@ -85,14 +93,14 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
         style={leftShift}
         isConnectable={isConnectable}
       />
-{/* bottom middle connection point: g */}
+      {/* bottom middle connection point: g */}
       <Handle
         type="source"
         position={Position.Bottom}
         id="g"
         isConnectable={isConnectable}
       />
-{/* bottom right connection point: h */}
+      {/* bottom right connection point: h */}
       <Handle
         type="target"
         position={Position.Bottom}
@@ -101,7 +109,7 @@ export default function FlashCardNode({ data, isConnectable, selected = false }:
         isConnectable={isConnectable}
       />
       {/* The actual FlashCard component */}
-      <Flashcard
+      <GraphFlashcard
         card={data.card}
         isActive={isActive}
         selected={selected}
