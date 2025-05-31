@@ -1,17 +1,17 @@
 // src/App.tsx
 import PageNav from "../components/flashcard_components/PageNav";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
-  ReactFlowProvider,
-  ReactFlow,
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
-  type Node,
-  type Edge,
-  type OnConnect,
-  type OnEdgesChange,
-  type OnNodesChange,
+	ReactFlowProvider,
+	ReactFlow,
+	addEdge,
+	applyEdgeChanges,
+	applyNodeChanges,
+	type Node,
+	type Edge,
+	type OnConnect,
+	type OnEdgesChange,
+	type OnNodesChange,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 
@@ -19,13 +19,11 @@ import FlashCardNode from "../components/graph_components/FlashCardNode";
 import type { FlashcardData } from "../components/flashcard_components/Flashcard";
 import { useAppContext } from "../context/AppContext";
 
-/* ──────────────────────────────────────────────────────────────
-   1.  Define a typed node for our flash‑cards
-   ────────────────────────────────────────────────────────────── */
+// Define a typed node for our flash‑cards
 type FlashCardNodeType = Node<{ card: FlashcardData }, "flashCard">;
 
 interface FlowCanvasProps {
-    flashCards: Array<FlashcardData>;
+	flashCards: Array<FlashcardData>;
 }
 /* ──────────────────────────────────────────────────────────────
    2.  Initial flash‑cards → initial nodes
@@ -36,12 +34,12 @@ interface FlowCanvasProps {
 // ];
 
 function cardsToNodes(cards: Array<FlashcardData>): FlashCardNodeType[] {
-  return cards.map((c, i) => ({
-    id: `flashcard-${c.id ?? i}`,
-    type: "flashCard",
-    position: { x: 120 + i * 260, y: 120 },
-    data: { card: c },
-  }));
+	return cards.map((c, i) => ({
+		id: `flashcard-${c.id ?? i}`,
+		type: "flashCard",
+		position: { x: 120 + i * 260, y: 120 },
+		data: { card: c },
+	}));
 }
 
 /* React‑Flow renders custom nodes based on this map */
@@ -50,57 +48,77 @@ const nodeTypes = { flashCard: FlashCardNode };
 /* ──────────────────────────────────────────────────────────────
    3.  The canvas component
    ────────────────────────────────────────────────────────────── */
-const FlowCanvas: React.FC<FlowCanvasProps> = ({ flashCards }: {flashCards: Array<FlashcardData>}) => {
-  const [nodes, setNodes] = useState<FlashCardNodeType[]>(cardsToNodes(flashCards));
-  const [edges, setEdges] = useState<Edge[]>([]);
+const FlowCanvas: React.FC<FlowCanvasProps> = ({
+	flashCards,
+}: {
+	flashCards: Array<FlashcardData>;
+}) => {
+	const { nodes, setNodes, edges, setEdges } = useAppContext();
 
-  const onNodesChange: OnNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds as Node[]) as FlashCardNodeType[]),
-    []
-  );
+	// Update nodes when flashCards change
+	useEffect(() => {
+		if (flashCards.length > 0) {
+			setNodes(cardsToNodes(flashCards));
+		}
+	}, [flashCards, setNodes]);
 
-  const onEdgesChange: OnEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
+	const onNodesChange: OnNodesChange = useCallback(
+		(changes) =>
+			setNodes(
+				(nds) =>
+					applyNodeChanges(
+						changes,
+						nds as Node[]
+					) as FlashCardNodeType[]
+			),
+		[]
+	);
 
-  const onConnect: OnConnect = useCallback(
-    (connection) => setEdges((eds) => addEdge(connection, eds)),
-    []
-  );
+	const onEdgesChange: OnEdgesChange = useCallback(
+		(changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+		[]
+	);
 
-  return (
-    <div style={{ height: 800 }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        nodeTypes={nodeTypes}
-        fitView
-        style={{ backgroundColor: "#FFFFFF" }}
-      />
-    </div>
-  );
-}
+	const onConnect: OnConnect = useCallback(
+		(connection) => setEdges((eds) => addEdge(connection, eds)),
+		[]
+	);
 
-const Graph: React.FC = () =>{
-  const { flashcards: flashCards } = useAppContext(); // Get flashcards from context
-  return (
-    <div>
-        <PageNav />
-        {flashCards.length > 0 ? (<ReactFlowProvider>
-            <FlowCanvas flashCards={flashCards}/>
-        </ReactFlowProvider>
-        ) : (
-            <div className="flex items-center justify-center h-screen">
-                <p className="text-gray-500">No flashcards available. Create some!</p>
-            </div>
-        )}
-    </div>
-  );
-}
+	return (
+		<div style={{ height: 800 }}>
+			<ReactFlow
+				nodes={nodes}
+				edges={edges}
+				onNodesChange={onNodesChange}
+				onEdgesChange={onEdgesChange}
+				onConnect={onConnect}
+				nodeTypes={nodeTypes}
+				fitView
+				style={{ backgroundColor: "#FFFFFF" }}
+			/>
+		</div>
+	);
+};
+
+const Graph: React.FC = () => {
+	const { flashcards: flashCards } = useAppContext(); // Get flashcards from context
+	return (
+		<div>
+			<PageNav />
+			{flashCards.length > 0 ? (
+				<ReactFlowProvider>
+					<FlowCanvas flashCards={flashCards} />
+				</ReactFlowProvider>
+			) : (
+				<div className="flex items-center justify-center h-screen">
+					<p className="text-gray-500">
+						No flashcards available. Create some!
+					</p>
+				</div>
+			)}
+		</div>
+	);
+};
 export default Graph;
 
 /* ──────────────────────────────────────────────────────────────
