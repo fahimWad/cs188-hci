@@ -3,12 +3,9 @@ import Flashcard, { FlashcardData } from "./Flashcard";
 import DeleteButton from "./DeleteButton";
 import { CustomHighlight } from "./Highlights";
 import FloatingFlashcard from "./FloatingFlashcard";
+import { useAppContext } from "../../context/AppContext";
 
 interface SidebarProps {
-	cards: FlashcardData[];
-	setCards: React.Dispatch<React.SetStateAction<FlashcardData[]>>;
-	setHighlights: React.Dispatch<React.SetStateAction<CustomHighlight[]>>;
-	highlights: CustomHighlight[];
 	flashcard: FlashcardData[];
 	onFlip: () => void;
 	onConfirm: () => void;
@@ -16,15 +13,12 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
-	cards,
-	setCards,
-	highlights,
-	setHighlights,
 	flashcard,
 	onFlip,
 	onConfirm,
 	onDelete,
 }) => {
+	const { flashcards, setFlashcards, setHighlights } = useAppContext();
 	const [selectedId, setSelectedId] = useState<string | number | null>(null);
 	const [editingId, setEditingId] = useState<string | number | null>(null);
 	const [flippedId, setFlippedId] = useState<string | number | null>(null);
@@ -34,7 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 	// ------------------------------------------------------------
 	// search filter
 	// ------------------------------------------------------------
-	const filtered = cards.filter(
+	const filtered = flashcards.filter(
 		(c) =>
 			c.front.toLowerCase().includes(search.toLowerCase()) ||
 			c.back.toLowerCase().includes(search.toLowerCase())
@@ -103,7 +97,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 											key={cardKey}
 											color="lavender"
 											onClick={() => {
-												setCards((prev) =>
+												setFlashcards((prev) =>
 													prev.filter(
 														(c) =>
 															(c.id ??
