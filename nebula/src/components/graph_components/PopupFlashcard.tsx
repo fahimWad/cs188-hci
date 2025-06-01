@@ -10,6 +10,7 @@ interface PopUpFlashcardProps {
   onConfirm: () => void;
   onDelete: () => void;
   shown: boolean;
+  closeModal: () => void;
 }
 // Detects if mac
 const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
@@ -30,6 +31,7 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
   onConfirm,
   onDelete,
   shown,
+  closeModal,
 }) => {
   //   // Only render if there is text to show.
   //   if (!flashcard || (!flashcard.front && !flashcard.back)) return null;
@@ -41,7 +43,10 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
     <div>
       {shown ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+          <div
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+            onClick={closeModal}
+          />
           <div
             className="
 			bg-transparent text-white-50 rounded-xl w-[10vw] h-[10vw]

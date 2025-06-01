@@ -166,6 +166,9 @@ const Graph: React.FC = () => {
             onConfirm={() => undefined}
             onDelete={() => undefined}
             shown={popupCardShown}
+            closeModal={() => {
+              setShown(false);
+            }}
           ></PopupFlashcard>
         </div>
       ) : (
