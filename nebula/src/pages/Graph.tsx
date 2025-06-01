@@ -23,14 +23,38 @@ import { useAppContext } from "../context/AppContext";
 
 import AddNodeButton from "../components/graph_components/AddNodeButton";
 import PopupFlashcard from "../components/graph_components/PopupFlashcard";
+import AddFlashcardButton from "../components/graph_components/AddFlashcardButton";
+import AddAnnotationButton from "../components/graph_components/AddAnnotationButton";
+import {
+	AnnotationNode,
+	AnnotationNodeContent,
+	AnnotationNodeIcon,
+} from "../components/graph_components/AnnotationNode";
 /* ──────────────────────────────────────────────────────────────
    1.  Define a typed node for our flash‑cards
    ────────────────────────────────────────────────────────────── */
 type FlashCardNodeType = Node<{ card: FlashcardData }, "flashCard">;
+type AnnotationNodeType = Node<
+	{ content: string; icon?: string },
+	"annotation"
+>;
+type AllNodeTypes = FlashCardNodeType | AnnotationNodeType;
 
 interface FlowCanvasProps {
-  flashCards: Array<FlashcardData>;
+	flashCards: Array<FlashcardData>;
 }
+
+const AnnotationNodeWrapper: React.FC<{
+	data: { content: string; icon?: string };
+}> = ({ data }) => {
+	return (
+		<AnnotationNode className="bg-yellow-100 border border-yellow-300 rounded-lg shadow-sm">
+			<AnnotationNodeContent>{data.content}</AnnotationNodeContent>
+			{data.icon && <AnnotationNodeIcon>{data.icon}</AnnotationNodeIcon>}
+		</AnnotationNode>
+	);
+};
+
 /* ──────────────────────────────────────────────────────────────
    2.  Initial flash‑cards → initial nodes
    ────────────────────────────────────────────────────────────── */
@@ -78,10 +102,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 		(changes) =>
 			setNodes(
 				(nds) =>
-					applyNodeChanges(
-						changes,
-						nds as Node[]
-					) as FlashCardNodeType[]
+					applyNodeChanges(changes, nds as Node[]) as AllNodeTypes[]
 			),
 		[setNodes]
 	);
@@ -113,9 +134,14 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 };
 
 const Graph: React.FC = () => {
-	const { flashcards: flashCards, setNodes } = useAppContext(); // Get flashcards from context
+	const { flashcards: flashCards, setNodes, nodes } = useAppContext(); // Get flashcards from context
+	const [open, setOpen] = useState(false); // State for "add node" button icon
 
-	const addGraphNode = useCallback(() => {
+	const toggleOpen = () => {
+		setOpen((prev) => !prev);
+	};
+
+	const addFlashcard = useCallback(() => {
 		// Generate a random position for the new node
 		const position = {
 			x: Math.random() * 400 + 100,
@@ -136,65 +162,92 @@ const Graph: React.FC = () => {
 		};
 
 		setNodes((prevNodes) => [...prevNodes, newGraphNode]);
+		setOpen(false);
 	}, [setNodes]);
-  const [currentPopupCard, setCurrentPopupCard] = useState<FlashcardData>({
-    id: "",
-    front: "",
-    back: "",
-  });
-  const [popupCardShown, setShown] = useState<boolean>(false);
-  const showPopupCard = useCallback(
-    (id: string) => {
-      setCurrentPopupCard(
-        flashCards.find((card) => card.id === id) ?? {
-          id: "",
-          front: "",
-          back: "",
-        }
-      );
-      setShown(true);
-      console.log("FOUND CARD");
-      console.log(flashCards);
-      console.log(id);
-      console.log(flashCards.find((card) => card.id == id));
-    },
-    [flashCards]
-  );
 
-  useEffect(() => {
-    const handleHash = () => {
-      const id = window.location.hash.replace(/^#flashcard-/, "");
-      if (id) showPopupCard(id);
-    };
+	const addAnnotation = useCallback(() => {
+		// Placeholder for adding an annotation
+		const position = {
+			x: Math.random() * 400 + 100,
+			y: Math.random() * 300 + 200,
+		};
 
-    handleHash();
-    window.addEventListener("hashchange", handleHash);
-    return () => window.removeEventListener("hashchange", handleHash);
-  }, [showPopupCard]);
+		const newAnnotation: AnnotationNodeType = {
+			id: `graphnode-${Date.now()}`,
+			type: "annotation",
+			position,
+			data: {
+				content: "Add your annotation here...",
+				icon: "📝", // Example icon, can be replaced with an actual icon component
+			},
+		};
+
+		setNodes((prevNodes) => [...prevNodes, newAnnotation]);
+		setOpen(false);
+	}, [setNodes]);
+
+	const [currentPopupCard, setCurrentPopupCard] = useState<FlashcardData>({
+		id: "",
+		front: "",
+		back: "",
+	});
+	const [popupCardShown, setShown] = useState<boolean>(false);
+	const showPopupCard = useCallback(
+		(id: string) => {
+			setCurrentPopupCard(
+				flashCards.find((card) => card.id === id) ?? {
+					id: "",
+					front: "",
+					back: "",
+				}
+			);
+			setShown(true);
+			console.log("FOUND CARD");
+			console.log(flashCards);
+			console.log(id);
+			console.log(flashCards.find((card) => card.id === id));
+		},
+		[flashCards]
+	);
+
+	useEffect(() => {
+		const handleHash = () => {
+			const id = window.location.hash.replace(/^#flashcard-/, "");
+			if (id) showPopupCard(id);
+		};
+
+		handleHash();
+		window.addEventListener("hashchange", handleHash);
+		return () => window.removeEventListener("hashchange", handleHash);
+	}, [showPopupCard]);
+
 	return (
 		<div>
 			<PageNav />
-			{flashCards.length > 0 ? (
-				<div>
-          <ReactFlowProvider>
-            <FlowCanvas flashCards={flashCards} />
-          </ReactFlowProvider>
-          <PopupFlashcard
-            flashcard={currentPopupCard}
-            onFlip={() => undefined}
-            onConfirm={() => undefined}
-            onDelete={() => undefined}
-            shown={popupCardShown}
-          ></PopupFlashcard>
-        </div>
-			) : (
-				<div className="flex items-center justify-center h-screen">
-					<p className="text-gray-500">
-						No flashcards available. Create some!
-					</p>
-				</div>
-			)}
-			<AddNodeButton onClick={addGraphNode} />
+			<ReactFlowProvider>
+				{nodes.length > 0 ? (
+					<div>
+						<FlowCanvas flashCards={flashCards} />
+						<PopupFlashcard
+							flashcard={currentPopupCard}
+							onFlip={() => undefined} // TODO: Implement. REMOVE BEFORE COMMIT
+							onConfirm={() => undefined}
+							onDelete={() => undefined}
+							shown={popupCardShown}
+						/>
+					</div>
+				) : (
+					<div className="flex items-center justify-center h-screen">
+						<p className="text-gray-500">
+							No flashcards available. Create some!
+						</p>
+					</div>
+				)}
+				{/* Floating Action Buttons */}
+				<AddNodeButton onClick={toggleOpen} isOpen={open} />
+				<AddFlashcardButton onClick={addFlashcard} isVisible={open} />
+				<AddAnnotationButton onClick={addAnnotation} isVisible={open} />
+			</ReactFlowProvider>
 		</div>
 	);
 };
