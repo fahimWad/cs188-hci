@@ -55,9 +55,12 @@ const AnnotationNodeWrapper: React.FC<{
   );
 };
 function isAnnotationNode(node: Node): node is AnnotationNodeType {
-  return node.type === "annotation" && "annotation" in node.data;
+  return node.type === "annotation";
 }
 
+function isFlashCardNode(node: Node): node is FlashCardNodeType {
+  return node.type === "flashCard";
+}
 /* ──────────────────────────────────────────────────────────────
    2.  Initial flash‑cards → initial nodes
    ────────────────────────────────────────────────────────────── */
@@ -214,20 +217,15 @@ const Graph: React.FC = () => {
   const [popupCardShown, setShown] = useState<boolean>(false);
   const showPopupCard = useCallback(
     (id: string) => {
+      const foundCard = nodes.find((node): node is FlashCardNodeType => {
+        return isFlashCardNode(node) && node.data.card.id === id;
+      });
       setCurrentPopupCard(
-        flashCards.find((card) => card.id === id) ?? {
-          id: "",
-          front: "",
-          back: "",
-        }
+        foundCard?.data.card ?? { id: "", front: "", back: "" }
       );
       setShown(true);
-      console.log("FOUND CARD");
-      console.log(flashCards);
-      console.log(id);
-      console.log(flashCards.find((card) => card.id === id));
     },
-    [flashCards]
+    [nodes]
   );
 
   useEffect(() => {
@@ -251,11 +249,12 @@ const Graph: React.FC = () => {
             <PopupFlashcard
               flashcard={currentPopupCard}
               onFlip={() => undefined} // TODO: Implement. REMOVE BEFORE COMMIT
-              onConfirm={() => modifyCard}
+              onConfirm={modifyCard}
               onDelete={() => undefined}
               shown={popupCardShown}
               closeModal={() => {
                 setShown(false);
+                console.log("CLOSE MODAL");
                 document.location.hash = "";
               }}
             />

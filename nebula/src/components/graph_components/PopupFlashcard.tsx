@@ -108,6 +108,7 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                           back: flashcard.back,
                         });
                         setFlipped(false);
+                        closeModal();
                       }}
                       isVisible={hover}
                     />
