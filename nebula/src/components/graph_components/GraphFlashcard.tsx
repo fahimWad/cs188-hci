@@ -5,47 +5,48 @@ import { FlashcardData } from "../flashcard_components/Flashcard";
 //
 
 interface FlashcardProps {
-  card: FlashcardData;
-  isActive: boolean;
-  selected: boolean;
-  editing: boolean;
-  flipped: boolean;
-  onSelect: () => void;
-  onEdit: (id: string | number | null) => void;
-  onFlip: () => void;
+	card: FlashcardData;
+	isActive: boolean;
+	selected: boolean;
+	editing: boolean;
+	flipped: boolean;
+	onSelect: () => void;
+	onEdit: (id: string | number | null) => void;
+	onFlip: () => void;
 }
 
 const GraphFlashcard: React.FC<FlashcardProps> = ({
-  card,
-  selected,
-  isActive,
-  editing,
-  flipped,
-  onSelect,
-  onFlip,
+	card,
+	selected,
+	isActive,
+	editing,
+	flipped,
+	onSelect,
+	onFlip,
 }) => {
-  const autoId = useId();
-  const id = card.id ?? autoId;
+	const autoId = useId();
+	const id = card.id ?? autoId;
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!editing) onSelect();
-  };
+	const handleClick = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		if (!editing) onSelect();
+	};
 
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    let cardID = card.id;
-    document.location.hash = `flashcard-${cardID}`;
-  };
+	const handleDoubleClick = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		let cardID = card.id;
+		document.location.hash = `flashcard-${cardID}`;
+	};
 
-  return (
-    <div
-      onClick={handleClick}
-      onDoubleClick={handleDoubleClick}
-      className={`
-      relative group
+	return (
+		<div
+			onClick={handleClick}
+			onDoubleClick={handleDoubleClick}
+			className={`
+      relative group rounded-md
       bg-neutral-2 rounded-xl shadow-md
-      max-w-[20rem]
+      w-[12rem]
+      h-[4rem]
       flex items-center justify-center
       cursor-pointer px-8 py-12 text-center text-white
       transition
@@ -55,18 +56,18 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
       ring-4 ease-in-out duration-200 
       ${isActive ? "ring-primary-3" : "ring-transparent"}
       `}
-    >
-      <span
-        className={`
+		>
+			<span
+				className={`
         text-lg
         ${selected ? "font-bold" : "font-light"}
       `}
-        style={{ maxWidth: "100%" }}
-      >
-        {flipped ? card.back : card.front}
-      </span>
-    </div>
-  );
+				style={{ maxWidth: "100%" }}
+			>
+				{flipped ? card.back : card.front}
+			</span>
+		</div>
+	);
 };
 
 export default GraphFlashcard;
