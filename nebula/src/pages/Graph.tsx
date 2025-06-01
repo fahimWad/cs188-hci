@@ -145,13 +145,15 @@ const Graph: React.FC = () => {
 			y: Math.random() * 300 + 200,
 		};
 
+		const id = Date.now().toString();
+
 		const newGraphNode: FlashCardNodeType = {
-			id: `graphnode-${Date.now()}`,
+			id: `graphnode-${id}`,
 			type: "flashCard",
 			position,
 			data: {
 				card: {
-					id: `${Date.now()}`,
+					id: `${id}`,
 					front: "New Concept",
 					back: "Add description...",
 				},
@@ -169,8 +171,10 @@ const Graph: React.FC = () => {
 			y: Math.random() * 300 + 200,
 		};
 
+		const id = Date.now().toString();
+
 		const newAnnotation: AnnotationNodeType = {
-			id: `graphnode-${Date.now()}`,
+			id: `graphnode-${id}`,
 			type: "annotation",
 			position,
 			data: {
