@@ -65,7 +65,7 @@ function cardsToNodes(cards: Array<FlashcardData>): FlashCardNodeType[] {
 		id: `flashcard-${c.id ?? i}`,
 		type: "flashCard",
 		position: { x: 120 + i * 260, y: 120 },
-		data: { card: c },
+		data: { card: c, type: "flashCard" as const },
 	}));
 }
 
