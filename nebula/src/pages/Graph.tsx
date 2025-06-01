@@ -55,7 +55,13 @@ const AnnotationNodeWrapper: React.FC<{
 		</AnnotationNode>
 	);
 };
+function isAnnotationNode(node: Node): node is AnnotationNodeType {
+	return node.type === "annotation";
+}
 
+function isFlashCardNode(node: Node): node is FlashCardNodeType {
+	return node.type === "flashCard";
+}
 /* ──────────────────────────────────────────────────────────────
    2.  Initial flash‑cards → initial nodes
    ────────────────────────────────────────────────────────────── */
@@ -138,6 +144,31 @@ const Graph: React.FC = () => {
 		setOpen((prev) => !prev);
 	};
 
+	const modifyCard = (newFlashcard: FlashcardData) => {
+		// For editing in the popup flashcard view
+		setNodes((prevNodes) =>
+			prevNodes.map((node) => {
+				if (isAnnotationNode(node)) return node;
+				const newNode = node as FlashCardNodeType;
+				if (newNode.data.card.id !== newFlashcard.id) return node;
+				return {
+					...newNode,
+					data: { ...newNode.data, card: newFlashcard },
+				};
+			})
+		);
+	};
+	useEffect(() => {
+		if (flashCards.length > 0) {
+			const flashcardNodes = cardsToNodes(flashCards);
+			setNodes((prevNodes) => [
+				...prevNodes.filter(
+					(node) => !node.id.startsWith("flashcard-")
+				),
+				...flashcardNodes,
+			]);
+		}
+	}, [flashCards, setNodes]);
 	const addFlashcard = useCallback(() => {
 		// Generate a random position for the new node
 		const position = {
@@ -195,20 +226,15 @@ const Graph: React.FC = () => {
 	const [popupCardShown, setShown] = useState<boolean>(false);
 	const showPopupCard = useCallback(
 		(id: string) => {
+			const foundCard = nodes.find((node): node is FlashCardNodeType => {
+				return isFlashCardNode(node) && node.data.card.id === id;
+			});
 			setCurrentPopupCard(
-				flashCards.find((card) => card.id === id) ?? {
-					id: "",
-					front: "",
-					back: "",
-				}
+				foundCard?.data.card ?? { id: "", front: "", back: "" }
 			);
 			setShown(true);
-			console.log("FOUND CARD");
-			console.log(flashCards);
-			console.log(id);
-			console.log(flashCards.find((card) => card.id === id));
 		},
-		[flashCards]
+		[nodes]
 	);
 
 	useEffect(() => {
@@ -231,12 +257,14 @@ const Graph: React.FC = () => {
 						<FlowCanvas flashCards={flashCards} />
 						<PopupFlashcard
 							flashcard={currentPopupCard}
-							onFlip={() => undefined}
-							onConfirm={() => undefined}
+							onFlip={() => undefined} // TODO: Implement. REMOVE BEFORE COMMIT
+							onConfirm={modifyCard}
 							onDelete={() => undefined}
 							shown={popupCardShown}
 							closeModal={() => {
 								setShown(false);
+								console.log("CLOSE MODAL");
+								document.location.hash = "";
 							}}
 						/>
 					</div>

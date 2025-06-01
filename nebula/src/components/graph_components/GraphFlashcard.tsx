@@ -27,9 +27,6 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
   const autoId = useId();
   const id = card.id ?? autoId;
 
-  const [frontText, setFrontText] = useState(card.front);
-  const [backText, setBackText] = useState(card.back);
-
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!editing) onSelect();
@@ -37,12 +34,7 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!editing) onFlip();
     let cardID = card.id;
-
-    cardID = cardID.replace("graph-", "");
-    console.log("SDKLFSDKLJF");
-    console.log(card);
     document.location.hash = `flashcard-${cardID}`;
   };
 
@@ -71,7 +63,7 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
       `}
         style={{ maxWidth: "100%" }}
       >
-        {flipped ? backText : frontText}
+        {flipped ? card.back : card.front}
       </span>
     </div>
   );
