@@ -27,9 +27,6 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
   const autoId = useId();
   const id = card.id ?? autoId;
 
-  const [frontText, setFrontText] = useState(card.front);
-  const [backText, setBackText] = useState(card.back);
-
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!editing) onSelect();
@@ -37,7 +34,6 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!editing) onFlip();
     let cardID = card.id;
     document.location.hash = `flashcard-${cardID}`;
   };

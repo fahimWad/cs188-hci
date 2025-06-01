@@ -38,7 +38,11 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
   const [flipped, setFlipped] = React.useState(false);
   const [editable, setEditable] = React.useState(false);
   const [hover, setHover] = React.useState(false);
-
+  React.useEffect(() => {
+    if (shown) {
+      setFlipped(false);
+    }
+  }, [shown]);
   return (
     <div>
       {shown ? (
