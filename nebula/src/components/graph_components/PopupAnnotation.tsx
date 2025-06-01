@@ -39,12 +39,16 @@ const PopupAnnotation: React.FC<PopupAnnotationProps> = ({
   annotation,
 }) => {
   const [content, setContent] = React.useState(annotationData.content);
+  const [baseText, setBase] = React.useState(annotationData.content);
   React.useEffect(() => {
     // For instant change of state when the content is changed outside of the component
     if (shown) {
       setContent(annotationData.content);
     }
   }, [annotationData, shown]);
+  React.useEffect(() => {
+    if (shown) setBase(annotationData.content);
+  }, [shown, annotationData.content]);
   const confirm = () => {
     onConfirm({ ...annotationData, content: content }, id);
     closeModal();
@@ -78,7 +82,9 @@ const PopupAnnotation: React.FC<PopupAnnotationProps> = ({
           className="min-h-[6rem] whitespace-pre-wrap break-words outline-none cursor-text"
           onInput={(e) => setContent(e.currentTarget.textContent ?? "")}
           onKeyDown={handleKeyDown}
-        ></div>
+        >
+          {baseText}
+        </div>
 
         {/* Footer */}
         <div className="mt-6 flex justify-end gap-2">
