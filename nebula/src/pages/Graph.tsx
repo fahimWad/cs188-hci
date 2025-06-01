@@ -256,6 +256,7 @@ const Graph: React.FC = () => {
               shown={popupCardShown}
               closeModal={() => {
                 setShown(false);
+                document.location.hash = "";
               }}
             />
           </div>
