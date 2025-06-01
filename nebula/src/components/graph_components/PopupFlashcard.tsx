@@ -11,6 +11,7 @@ interface PopUpFlashcardProps {
   onDelete: () => void;
   shown: boolean;
   closeModal: () => void;
+  annotation: boolean;
 }
 // Detects if mac
 const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
@@ -32,6 +33,7 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
   onDelete,
   shown,
   closeModal,
+  annotation,
 }) => {
   //   // Only render if there is text to show.
   //   if (!flashcard || (!flashcard.front && !flashcard.back)) return null;
@@ -112,13 +114,17 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                       }}
                       isVisible={hover}
                     />
-                    <FlipButton
-                      isActive={flashcard.front.length > 0}
-                      onClick={() => {
-                        onFlip();
-                        setFlipped((prev) => !prev);
-                      }}
-                    />
+                    {annotation ? (
+                      <div></div>
+                    ) : (
+                      <FlipButton
+                        isActive={flashcard.front.length > 0}
+                        onClick={() => {
+                          onFlip();
+                          setFlipped((prev) => !prev);
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
 
