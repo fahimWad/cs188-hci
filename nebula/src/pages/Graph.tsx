@@ -30,8 +30,9 @@ import {
 	AnnotationNodeContent,
 	AnnotationNodeIcon,
 } from "../components/graph_components/AnnotationNode";
+
 /* ──────────────────────────────────────────────────────────────
-   1.  Define a typed node for our flash‑cards
+   1.  Define a typed node for our flash‑cards and annotations
    ────────────────────────────────────────────────────────────── */
 type FlashCardNodeType = Node<{ card: FlashcardData }, "flashCard">;
 type AnnotationNodeType = Node<
@@ -58,10 +59,6 @@ const AnnotationNodeWrapper: React.FC<{
 /* ──────────────────────────────────────────────────────────────
    2.  Initial flash‑cards → initial nodes
    ────────────────────────────────────────────────────────────── */
-// const seedCards: FlashcardData[] = [
-//   { id: "1", front: "Noun", back: "person, place, or thing" },
-//   { id: "2", front: "Verb", back: "an action" },
-// ];
 
 function cardsToNodes(cards: Array<FlashcardData>): FlashCardNodeType[] {
 	return cards.map((c, i) => ({
@@ -225,12 +222,12 @@ const Graph: React.FC = () => {
 		<div>
 			<PageNav />
 			<ReactFlowProvider>
-				{nodes.length > 0 ? (
+				{nodes.length > 0 || flashCards.length > 0 ? (
 					<div>
 						<FlowCanvas flashCards={flashCards} />
 						<PopupFlashcard
 							flashcard={currentPopupCard}
-							onFlip={() => undefined} // TODO: Implement. REMOVE BEFORE COMMIT
+							onFlip={() => undefined}
 							onConfirm={() => undefined}
 							onDelete={() => undefined}
 							shown={popupCardShown}
