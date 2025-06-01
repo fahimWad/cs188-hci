@@ -154,7 +154,7 @@ const Graph: React.FC = () => {
 			position,
 			data: {
 				card: {
-					id: `graph-${Date.now()}`,
+					id: `${Date.now()}`,
 					front: "New Concept",
 					back: "Add description...",
 				},
