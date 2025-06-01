@@ -39,10 +39,6 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
     e.stopPropagation();
     if (!editing) onFlip();
     let cardID = card.id;
-
-    cardID = cardID.replace("graph-", "");
-    console.log("SDKLFSDKLJF");
-    console.log(card);
     document.location.hash = `flashcard-${cardID}`;
   };
 
@@ -71,7 +67,7 @@ const GraphFlashcard: React.FC<FlashcardProps> = ({
       `}
         style={{ maxWidth: "100%" }}
       >
-        {flipped ? backText : frontText}
+        {flipped ? card.back : card.front}
       </span>
     </div>
   );

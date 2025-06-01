@@ -7,7 +7,7 @@ import DeleteButton from "../flashcard_components/DeleteButton";
 interface PopUpFlashcardProps {
   flashcard: FlashcardData;
   onFlip: () => void;
-  onConfirm: () => void;
+  onConfirm: (newFlashcard: FlashcardData) => void;
   onDelete: () => void;
   shown: boolean;
   closeModal: () => void;
@@ -98,7 +98,11 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                         flashcard.front.length > 0 && flashcard.back.length > 0
                       }
                       onClick={() => {
-                        onConfirm();
+                        onConfirm({
+                          id: flashcard.id,
+                          front: flashcard.front,
+                          back: flashcard.back,
+                        });
                         setFlipped(false);
                       }}
                       isVisible={hover}
@@ -175,8 +179,12 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                         flashcard.front.length > 0 && flashcard.back.length > 0
                       }
                       onClick={() => {
-                        onConfirm();
-                        setFlipped(false);
+                        onConfirm({
+                          id: flashcard.id,
+                          front: flashcard.front,
+                          back: flashcard.back,
+                        });
+                        closeModal();
                       }}
                       isVisible={hover}
                     />
