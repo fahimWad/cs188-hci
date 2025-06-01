@@ -7,9 +7,10 @@ import DeleteButton from "../flashcard_components/DeleteButton";
 interface PopUpFlashcardProps {
   flashcard: FlashcardData;
   onFlip: () => void;
-  onConfirm: () => void;
+  onConfirm: (newFlashcard: FlashcardData) => void;
   onDelete: () => void;
   shown: boolean;
+  closeModal: () => void;
 }
 // Detects if mac
 const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
@@ -30,18 +31,26 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
   onConfirm,
   onDelete,
   shown,
+  closeModal,
 }) => {
   //   // Only render if there is text to show.
   //   if (!flashcard || (!flashcard.front && !flashcard.back)) return null;
   const [flipped, setFlipped] = React.useState(false);
   const [editable, setEditable] = React.useState(false);
   const [hover, setHover] = React.useState(false);
-
+  React.useEffect(() => {
+    if (shown) {
+      setFlipped(false);
+    }
+  }, [shown]);
   return (
     <div>
       {shown ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+          <div
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+            onClick={closeModal}
+          />
           <div
             className="
 			bg-transparent text-white-50 rounded-xl w-[10vw] h-[10vw]
@@ -93,8 +102,13 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                         flashcard.front.length > 0 && flashcard.back.length > 0
                       }
                       onClick={() => {
-                        onConfirm();
+                        onConfirm({
+                          id: flashcard.id,
+                          front: flashcard.front,
+                          back: flashcard.back,
+                        });
                         setFlipped(false);
+                        closeModal();
                       }}
                       isVisible={hover}
                     />
@@ -170,8 +184,12 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                         flashcard.front.length > 0 && flashcard.back.length > 0
                       }
                       onClick={() => {
-                        onConfirm();
-                        setFlipped(false);
+                        onConfirm({
+                          id: flashcard.id,
+                          front: flashcard.front,
+                          back: flashcard.back,
+                        });
+                        closeModal();
                       }}
                       isVisible={hover}
                     />
