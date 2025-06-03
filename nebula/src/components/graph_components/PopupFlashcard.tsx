@@ -102,6 +102,7 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                     <ConfirmButton
                       isActive={
                         flashcard.front.length > 0 && flashcard.back.length > 0
+                        && flashcard.front !== "New Concept" && flashcard.back !== "Add description..."
                       }
                       onClick={() => {
                         onConfirm({
@@ -112,7 +113,6 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                         setFlipped(false);
                         closeModal();
                       }}
-                      isVisible={hover}
                     />
                     {annotation ? (
                       <div></div>
@@ -128,7 +128,7 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                   </div>
                 </div>
 
-                {flashcard.front.length > 0 ? (
+                {(flashcard.front.length > 0) ? (
                   <div
                     contentEditable={editable ? "plaintext-only" : false}
                     suppressContentEditableWarning={true}
@@ -188,6 +188,7 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                     <ConfirmButton
                       isActive={
                         flashcard.front.length > 0 && flashcard.back.length > 0
+                        && flashcard.front !== "New Concept" && flashcard.back !== "Add description..."
                       }
                       onClick={() => {
                         onConfirm({
@@ -197,7 +198,6 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                         });
                         closeModal();
                       }}
-                      isVisible={hover}
                     />
                     <FlipButton
                       isActive={flashcard.front.length > 0}

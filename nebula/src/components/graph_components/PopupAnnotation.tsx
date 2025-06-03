@@ -91,7 +91,6 @@ const PopupAnnotation: React.FC<PopupAnnotationProps> = ({
           <ConfirmButton
             isActive={content.trim().length > 0}
             onClick={confirm}
-            isVisible={true}
           />
         </div>
       </div>

@@ -23,9 +23,8 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
         className={`
             p-0.5 rounded-lg
             cursor-pointer
-            opacity-0
+            opacity-100
             ${colorClassMap[color] || ''}
-            ${isVisible ? 'opacity-100' : ''}
         `}
         type="button"
         onClick={onClick}

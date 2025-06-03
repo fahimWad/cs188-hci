@@ -92,7 +92,6 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 									onConfirm();
 									setFlipped(false);
 								}}
-								isVisible={hover}
 							/>
 							<FlipButton
 								isActive={flashcard.front.length > 0}
@@ -170,7 +169,6 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 									onConfirm();
 									setFlipped(false);
 								}}
-								isVisible={hover}
 							/>
 							<FlipButton
 								isActive={flashcard.front.length > 0}
