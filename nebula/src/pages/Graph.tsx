@@ -141,6 +141,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 		[setEdges]
 	);
 
+  const proOptions = { hideAttribution: true };
 	return (
 		<div style={{ height: 800 }}>
 			<ReactFlow
@@ -151,8 +152,10 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 				onConnect={onConnect}
 				nodeTypes={nodeTypes}
 				edgeTypes={edgeTypes}
+        proOptions={proOptions}
 				fitView
-				style={{ backgroundColor: "#FFFFFF" }}
+				style={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF' }}
+        translateExtent={[[ -1e6, -1e6 ], [ 1e6, 1e6 ]]}  /* virtually unlimited panning */
 			/>
 		</div>
 	);
