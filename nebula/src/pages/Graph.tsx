@@ -280,7 +280,7 @@ const Graph: React.FC = () => {
 	const [popupCardShown, setShown] = useState<boolean>(false);
 	const showPopupCard = useCallback(
 		(id: string, type: string) => {
-			if (type == "Node") {
+			if (type === "Node") {
 				const foundCard = nodes.find(
 					(node): node is FlashCardNodeType => {
 						return (
@@ -292,10 +292,10 @@ const Graph: React.FC = () => {
 					foundCard?.data.card ?? { id: "", front: "", back: "" }
 				);
 				setEditingAnnotation(false);
-			} else if (type == "Annotation") {
+			} else if (type === "Annotation") {
 				const foundCard = nodes.find(
 					(node): node is AnnotationNodeType => {
-						return isAnnotationNode(node) && node.id == id;
+						return isAnnotationNode(node) && node.id === id;
 					}
 				) ?? {
 					id: "",
