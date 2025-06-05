@@ -143,7 +143,6 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 
   const proOptions = { hideAttribution: true };
 	return (
-		<div style={{ height: 800 }}>
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
@@ -153,12 +152,12 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 				nodeTypes={nodeTypes}
 				edgeTypes={edgeTypes}
         proOptions={proOptions}
+        panOnDrag
 				fitView
 				style={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF' }}
         translateExtent={[[ -1e6, -1e6 ], [ 1e6, 1e6 ]]}  /* virtually unlimited panning */
 			/>
-		</div>
-	);
+    );
 };
 
 const Graph: React.FC = () => {
@@ -333,11 +332,11 @@ const Graph: React.FC = () => {
 	}, [showPopupCard]);
 
 	return (
-		<div>
+		<div className="flex flex-col h-screen">
 			<PageNav />
 			<ReactFlowProvider>
 				{nodes.length > 0 || flashCards.length > 0 ? (
-					<div>
+					<div className="relative flex-1">
 						<FlowCanvas flashCards={flashCards} />
 						{editingAnnotation ? (
 							<PopupAnnotation
