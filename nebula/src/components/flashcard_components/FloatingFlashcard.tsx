@@ -11,18 +11,18 @@ interface FloatingFlashcardProps {
 	onDelete: () => void;
 }
 // simple mac detection
-const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
 
 // inside your key handler:
 function handleKeyDown(e: React.KeyboardEvent) {
-  const modKey = isMac ? e.metaKey : e.ctrlKey;
-  const isBold  = modKey && e.key.toLowerCase() === 'b';
-  
-  if (isBold) {
-    // do your “bold” action…
-    e.preventDefault();
-    document.execCommand("bold");
-  }
+	const modKey = isMac ? e.metaKey : e.ctrlKey;
+	const isBold = modKey && e.key.toLowerCase() === "b";
+
+	if (isBold) {
+		// do your “bold” action…
+		e.preventDefault();
+		document.execCommand("bold");
+	}
 }
 
 const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
@@ -48,11 +48,11 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 			{/* Flashcard flip section */}
 			<div
 				className={`
-					relative w-full h-full transition-transform duration-700
-					[transform-style:preserve-3d] [-webkit-transform-style:preserve-3d]
-					ring-primary-3 ring-4 rounded-xl
-					${flipped ? "[transform:rotateX(180deg)]" : ""}
-				`}
+                    relative w-full h-full transition-transform duration-700
+                    [transform-style:preserve-3d] [-webkit-transform-style:preserve-3d]
+                    ring-primary-3 ring-4 rounded-xl
+                    ${flipped ? "[transform:rotateX(180deg)]" : ""}
+                `}
 				onMouseEnter={() => {
 					setHover(true);
 				}}
@@ -63,23 +63,21 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 				{/* Flashcard front */}
 				<div
 					className="
-					absolute inset-0 flex items-center justify-center
-					bg-neutral-2 border border-primary-3 rounded-xl shadow
-					text-xl font-bold
-					[transform:rotateX(0deg)] [-webkit-transform:rotateX(0deg)]
-					[backface-visibility:hidden] [-webkit-backface-visibility:hidden]
-					overflow-auto
-					"
+                    absolute inset-0 flex flex-col
+                    bg-neutral-2 border border-primary-3 rounded-xl shadow
+                    text-xl font-bold
+                    [transform:rotateX(0deg)] [-webkit-transform:rotateX(0deg)]
+                    [backface-visibility:hidden] [-webkit-backface-visibility:hidden]
+                    "
 				>
 					{/* Flashcard header */}
-					<div
-						className={`absolute top-0 left-0 w-full flex justify-between items-center px-4 py-2 z-20 pointer-events-auto`}
-					>
+					<div className="absolute top-0 left-0 right-0 flex justify-between items-center px-4 py-2 bg-neutral-2 rounded-t-xl">
 						{/* Delete Button (top left) */}
 						<DeleteButton
 							color="red"
 							onClick={onDelete}
 							isVisible={hover}
+							isActive={flashcard.front.length > 0}
 						/>
 						{/* Flip and Confirm buttons (top right) */}
 						<div className="flex gap-2">
@@ -103,58 +101,64 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 						</div>
 					</div>
 
-					{flashcard.front.length > 0 ? (
-						<div
-							contentEditable={editable ? "plaintext-only" : false}
-							suppressContentEditableWarning={true}
-							onClick={() => setEditable(true)}
-							onBlur={() => setEditable(false)}
-							onInput={(e) => {
-								const newText = e.currentTarget.textContent;
-								if (newText !== null) {
-									flashcard.front = newText;
+					<div className="flex-1 overflow-y-scroll py-4 pt-8 px-2">
+						{flashcard.front.length > 0 ? (
+							<div
+								contentEditable={
+									editable ? "plaintext-only" : false
 								}
-							}}
-							onKeyDown={handleKeyDown}
-						>
-							<p className="text-center p-2 text-white hover:underline hover:underline-offset-8 cursor-pointer decoration-4 decoration-primary-3">
-								{flashcard.front}
-							</p>
-						</div>
-					) : (
-						<div>
-							<p className="text-center font-bold">New Term</p>
-							<span className="text-sm font-light">
-								Select text from PDF
-							</span>
-						</div>
-					)}
+								suppressContentEditableWarning={true}
+								onClick={() => setEditable(true)}
+								onBlur={() => setEditable(false)}
+								onInput={(e) => {
+									const newText = e.currentTarget.textContent;
+									if (newText !== null) {
+										flashcard.front = newText;
+									}
+								}}
+								onKeyDown={handleKeyDown}
+								className="min-h-full flex items-center justify-center"
+								style={{ direction: "ltr" }}
+							>
+								<p className="text-center p-2 text-white cursor-pointer decoration-4 decoration-primary-3">
+									{flashcard.front}
+								</p>
+							</div>
+						) : (
+							<div className="flex items-center justify-center h-full">
+								<div className="text-center">
+									<p className="font-bold">New Term</p>
+									<span className="text-sm font-light">
+										Select text from PDF
+									</span>
+								</div>
+							</div>
+						)}
+					</div>
 				</div>
 
 				{/* Flashcard back */}
 				<div
 					className="
-					absolute inset-0 flex items-center justify-center
-					bg-neutral-2 border border-primary-3 rounded-xl shadow
-					text-xl font-bold
-					[transform:rotateX(180deg)] [-webkit-transform:rotateX(180deg)]
-					[backface-visibility:hidden] [-webkit-backface-visibility:hidden]
-					overflow-auto
-					"
+                    absolute inset-0 flex flex-col
+                    bg-neutral-2 border border-primary-3 rounded-xl shadow
+                    text-xl font-bold
+                    [transform:rotateX(180deg)] [-webkit-transform:rotateX(180deg)]
+                    [backface-visibility:hidden] [-webkit-backface-visibility:hidden]
+                    "
 				>
 					{/* Flashcard header */}
-					<div
-						className={`absolute top-0 left-0 w-full flex justify-between items-center px-4 py-2 z-20 pointer-events-auto [transform:rotateX(180deg)]"}`}
-					>
+					<div className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center px-4 py-2 bg-neutral-2 rounded-t-xl">
 						{/* Delete Button (top left) */}
 						<DeleteButton
 							color="red"
 							onClick={onDelete}
 							isVisible={hover}
+							isActive={flashcard.back.length > 0}
 						/>
 						{/* Front text */}
-						<div className="flex-1 flex items-center justify-center overflow-hidden mx-2">
-							<span className="truncate text-white text-base font-semibold translate-x-[7%]">
+						<div className="flex-1 flex items-center justify-center overflow-hidden mx-2 ">
+							<span className="truncate text-white text-base font-semibold">
 								{flashcard.front}
 							</span>
 						</div>
@@ -179,29 +183,35 @@ const FloatingFlashcard: React.FC<FloatingFlashcardProps> = ({
 							/>
 						</div>
 					</div>
-					{flashcard.back.length > 0 ? (
-						<div
-							contentEditable={editable}
-							suppressContentEditableWarning={true}
-							onClick={() => setEditable(true)}
-							onBlur={() => setEditable(false)}
-							onInput={(e) => {
-								const newText = e.currentTarget.textContent;
-								if (newText !== null) {
-									flashcard.back = newText;
-								}
-							}}
-							onKeyDown={handleKeyDown}
-						>
-							<p className="text-left text-sm [&_b]:font-bold font-light p-2 text-white hover:underline hover:underline-offset-8 cursor-pointer decoration-4 decoration-primary-3">
-								{flashcard.back}
-							</p>
-						</div>
-					) : (
-						<p className="text-center p-2 font-light">
-							Select text from PDF
-						</p>
-					)}
+					<div className="flex-1 overflow-y-auto py-4 pt-8 px-2">
+						{flashcard.back.length > 0 ? (
+							<div
+								contentEditable={editable}
+								suppressContentEditableWarning={true}
+								onClick={() => setEditable(true)}
+								onBlur={() => setEditable(false)}
+								onInput={(e) => {
+									const newText = e.currentTarget.textContent;
+									if (newText !== null) {
+										flashcard.back = newText;
+									}
+								}}
+								onKeyDown={handleKeyDown}
+								className="w-full"
+								style={{ direction: "ltr" }}
+							>
+								<p className="text-left text-sm [&_b]:font-bold font-light p-2 text-white cursor-pointer decoration-4 decoration-primary-3">
+									{flashcard.back}
+								</p>
+							</div>
+						) : (
+							<div className="flex items-center justify-center h-full">
+								<p className="text-center font-light">
+									Select text from PDF
+								</p>
+							</div>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>
