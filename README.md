@@ -1,6 +1,6 @@
 # Nebula
 
-<img src="nebula_logo.jpeg" width=200 />
+<img src="nebula-poster.png" />
 
 ## Running the project
 Once you open up the repository, run:
