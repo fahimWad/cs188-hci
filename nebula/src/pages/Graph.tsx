@@ -71,13 +71,24 @@ function isFlashCardNode(node: Node): node is FlashCardNodeType {
 }
 // Initial flash‑cards -> initial nodes
 
-function cardsToNodes(cards: Array<FlashcardData>): FlashCardNodeType[] {
-	return cards.map((c, i) => ({
-		id: `flashcard-${c.id ?? i}`,
-		type: "flashCard",
-		position: { x: 120 + i * 260, y: 120 },
-		data: { card: c, type: "flashCard" as const },
-	}));
+function cardsToNodes(
+	cards: Array<FlashcardData>,
+	existingNodes: AllNodeTypes[] = []
+): FlashCardNodeType[] {
+	return cards.map((c, i) => {
+		const nodeId = `flashcard-${c.id ?? i}`;
+
+		// Try to find existing position for this node
+		const existingNode = existingNodes.find((node) => node.id === nodeId);
+		const defaultPosition = { x: 120 + i * 260, y: 120 };
+
+		return {
+			id: nodeId,
+			type: "flashCard",
+			position: existingNode?.position || defaultPosition, // Use existing position if available
+			data: { card: c, type: "flashCard" as const },
+		};
+	});
 }
 
 // Register custom nodes
@@ -101,7 +112,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 	// Update nodes when flashCards change
 	useEffect(() => {
 		if (flashCards.length > 0) {
-			const flashcardNodes = cardsToNodes(flashCards);
+			const flashcardNodes = cardsToNodes(flashCards, nodes); // Pass existing nodes
 			setNodes((prevNodes) => [
 				...prevNodes.filter(
 					(node) => !node.id.startsWith("flashcard-")
@@ -109,7 +120,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 				...flashcardNodes,
 			]);
 		}
-	}, [flashCards, setNodes]);
+	}, [flashCards, setNodes]); // Note: don't add 'nodes' to dependencies to avoid infinite loops
 
 	const onNodesChange: OnNodesChange = useCallback(
 		(changes) =>
@@ -141,8 +152,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 		[setEdges]
 	);
 
-  const proOptions = { hideAttribution: true };
 	return (
+		<div style={{ height: 800 }}>
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
@@ -151,13 +162,11 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 				onConnect={onConnect}
 				nodeTypes={nodeTypes}
 				edgeTypes={edgeTypes}
-        proOptions={proOptions}
-        panOnDrag
 				fitView
-				style={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF' }}
-        translateExtent={[[ -1e6, -1e6 ], [ 1e6, 1e6 ]]}  /* virtually unlimited panning */
+				style={{ backgroundColor: "#FFFFFF" }}
 			/>
-    );
+		</div>
+	);
 };
 
 const Graph: React.FC = () => {
@@ -207,7 +216,7 @@ const Graph: React.FC = () => {
 	};
 	useEffect(() => {
 		if (flashCards.length > 0) {
-			const flashcardNodes = cardsToNodes(flashCards);
+			const flashcardNodes = cardsToNodes(flashCards, nodes); // Pass existing nodes here too
 			setNodes((prevNodes) => [
 				...prevNodes.filter(
 					(node) => !node.id.startsWith("flashcard-")
@@ -280,7 +289,7 @@ const Graph: React.FC = () => {
 	const [popupCardShown, setShown] = useState<boolean>(false);
 	const showPopupCard = useCallback(
 		(id: string, type: string) => {
-			if (type === "Node") {
+			if (type == "Node") {
 				const foundCard = nodes.find(
 					(node): node is FlashCardNodeType => {
 						return (
@@ -292,10 +301,10 @@ const Graph: React.FC = () => {
 					foundCard?.data.card ?? { id: "", front: "", back: "" }
 				);
 				setEditingAnnotation(false);
-			} else if (type === "Annotation") {
+			} else if (type == "Annotation") {
 				const foundCard = nodes.find(
 					(node): node is AnnotationNodeType => {
-						return isAnnotationNode(node) && node.id === id;
+						return isAnnotationNode(node) && node.id == id;
 					}
 				) ?? {
 					id: "",
@@ -332,11 +341,11 @@ const Graph: React.FC = () => {
 	}, [showPopupCard]);
 
 	return (
-		<div className="flex flex-col h-screen">
+		<div>
 			<PageNav />
 			<ReactFlowProvider>
 				{nodes.length > 0 || flashCards.length > 0 ? (
-					<div className="relative flex-1">
+					<div>
 						<FlowCanvas flashCards={flashCards} />
 						{editingAnnotation ? (
 							<PopupAnnotation
