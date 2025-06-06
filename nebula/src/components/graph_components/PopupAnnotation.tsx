@@ -67,7 +67,7 @@ const PopupAnnotation: React.FC<PopupAnnotationProps> = ({
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           {/* Delete */}
-          <DeleteButton color="red" onClick={onDelete} />
+          <DeleteButton color="red" onClick={onDelete} isActive={true} />
 
           {/* Optional icon */}
           {annotationData.icon && (

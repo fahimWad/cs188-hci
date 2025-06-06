@@ -152,25 +152,26 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 		[setEdges]
 	);
 
+	const proOptions = { hideAttribution: true };
 	return (
-		<div style={{ height: 800 }}>
-			<ReactFlow
-				nodes={nodes}
-				edges={edges}
-				onNodesChange={onNodesChange}
-				onEdgesChange={onEdgesChange}
-				onConnect={onConnect}
-				nodeTypes={nodeTypes}
-				edgeTypes={edgeTypes}
-				fitView
-				style={{ backgroundColor: "#FFFFFF" }}
-			/>
-		</div>
-	);
+		<ReactFlow
+			nodes={nodes}
+			edges={edges}
+			onConnect={onConnect}
+			nodeTypes={nodeTypes}
+			edgeTypes={edgeTypes}
+			proOptions={proOptions}
+			onNodesChange={onNodesChange}
+			onEdgesChange={onEdgesChange}
+			fitView
+			style={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF' }}
+			translateExtent={[[ -1e6, -1e6 ], [ 1e6, 1e6 ]]}  /* virtually unlimited panning */
+		/>
+    );
 };
 
 const Graph: React.FC = () => {
-	const { flashcards: flashCards, setNodes, nodes } = useAppContext(); // Get flashcards from context
+	const { flashcards: flashCards, setNodes, nodes, setEdges, setHighlights, setFlashcards} = useAppContext(); // Get flashcards from context
 	const [open, setOpen] = useState(false); // State for "add node" button icon
 	const [editingAnnotation, setEditingAnnotation] = useState<boolean>(false);
 	const toggleOpen = () => {
@@ -340,12 +341,90 @@ const Graph: React.FC = () => {
 		return () => window.removeEventListener("hashchange", handleHash);
 	}, [showPopupCard]);
 
+	
+	const handleDeleteCard = () => {
+		// 1) Remove from sidebar array if it’s there (by comparing card.id)
+		setFlashcards((prev) =>
+			prev.filter((card) => card.id !== currentPopupCard.id)
+		);
+
+		// 2) Remove any highlights for that flashcard
+		setHighlights((prev) =>
+			prev.filter(
+			(h) =>
+				String(h.flashcardID) !== currentPopupCard.id || h.side !== "front"
+			)
+		);
+		setHighlights((prev) =>
+			prev.filter(
+			(h) =>
+				String(h.flashcardID) !== currentPopupCard.id || h.side !== "back"
+			)
+		);
+
+		// 3) Find the actual node in `nodes` whose data.card.id matches currentPopupCard.id
+		//    This works whether the node’s ID was "flashcard-…" or "graphnode-…".
+		const nodeToDelete = nodes.find(
+			(node): node is FlashCardNodeType =>
+			isFlashCardNode(node) && node.data.card.id === currentPopupCard.id
+		);
+
+		if (nodeToDelete) {
+			const nodeId = nodeToDelete.id;
+
+			// 4) Remove that node from React Flow
+			setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId));
+
+			// 5) Remove any edges whose source or target was this node
+			setEdges((prevEdges) =>
+			prevEdges.filter(
+				(edge) => edge.source !== nodeId && edge.target !== nodeId
+			)
+			);
+		}
+
+		// 6) Close the popup, clear its state, and reset the hash so it won’t reopen
+		setCurrentPopupCard({ id: "", front: "", back: "" });
+		setShown(false);
+		document.location.hash = "";
+	};
+
+	const handleDeleteAnnotation = () => {
+		// Since annotation nodes always store their own ID as `node.id`, we can delete by that directly:
+		const annotationId = currentAnnotation.id;
+
+		// 1) Remove the annotation node from `nodes`
+		setNodes((prevNodes) =>
+			prevNodes.filter((node) => node.id !== annotationId)
+		);
+
+		// 2) Remove any edges attached to that annotation
+		setEdges((prevEdges) =>
+			prevEdges.filter(
+			(edge) => edge.source !== annotationId && edge.target !== annotationId
+			)
+		);
+
+		// 3) Clear annotation‐popup state, close the modal, and reset the hash
+		setCurrentAnnotation({
+			id: "",
+			type: "annotation",
+			position: { x: 0, y: 0 },
+			data: { content: "" },
+		});
+		setShown(false);
+		document.location.hash = "";
+	};
+
+
+
+
 	return (
-		<div>
+		<div className="flex flex-col h-screen">
 			<PageNav />
 			<ReactFlowProvider>
 				{nodes.length > 0 || flashCards.length > 0 ? (
-					<div>
+					<div className="relative flex-1">
 						<FlowCanvas flashCards={flashCards} />
 						{editingAnnotation ? (
 							<PopupAnnotation
@@ -353,7 +432,7 @@ const Graph: React.FC = () => {
 								id={currentAnnotation.id}
 								onConfirm={modifyAnnotation}
 								shown={popupCardShown}
-								onDelete={() => undefined}
+								onDelete={handleDeleteAnnotation}
 								closeModal={() => {
 									setShown(false);
 									document.location.hash = "";
@@ -365,7 +444,7 @@ const Graph: React.FC = () => {
 								flashcard={currentPopupCard}
 								onFlip={() => undefined} // TODO: Implement. REMOVE BEFORE COMMIT
 								onConfirm={modifyCard}
-								onDelete={() => undefined}
+								onDelete={handleDeleteCard}
 								shown={popupCardShown}
 								closeModal={() => {
 									setShown(false);
