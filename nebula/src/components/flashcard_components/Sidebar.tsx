@@ -123,6 +123,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 													setHoveredId(null);
 											}}
 											isVisible={hoveredId === cardKey}
+											isActive={true}
 										/>
 									</div>
 								</div>
