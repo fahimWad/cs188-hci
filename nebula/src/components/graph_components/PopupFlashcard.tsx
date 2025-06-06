@@ -96,6 +96,7 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                     color="red"
                     onClick={onDelete}
                     isVisible={hover}
+                    isActive={true}
                   />
                   {/* Flip and Confirm buttons (top right) */}
                   <div className="flex gap-2">
@@ -176,6 +177,7 @@ const PopupFlashcard: React.FC<PopUpFlashcardProps> = ({
                     color="red"
                     onClick={onDelete}
                     isVisible={hover}
+                    isActive={true}
                   />
                   {/* Front text */}
                   <div className="flex-1 flex items-center justify-center overflow-hidden mx-2">
